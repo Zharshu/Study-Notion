@@ -1,4 +1,8 @@
 # StudyNotion - EdTech Platform
+## 🚀 Live Demo
+
+👉 [Click here to view Study Notion Live!](https://study-notion-harshit.onrender.com/)
+
 ![Architecture](./images/mainpage.png)
 Main Page StudyNotion is a fully functional EdTech platform that enables users to create, consume, and rate educational content. The platform is built using the MERN stack, which includes ReactJS, NodeJS, MongoDB, and ExpressJS.
 
