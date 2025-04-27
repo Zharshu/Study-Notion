@@ -82,28 +82,44 @@ Below is a high-level diagram that illustrates the architecture of the StudyNoti
 ### API Design
 The StudyNotion platform's API is designed following the REST architectural style. The API is implemented using Node.js and Express.js. It uses JSON for data exchange and follows standard HTTP request methods such as GET, POST, PUT, and DELETE.
 
-/api/auth/signup (POST) - Create a new user (student or instructor) account.
-/api/auth/login (POST) – Log in using existing credentials and generate a JWT token.
-/api/auth/verify-otp (POST) - Verify the OTP sent to the user's registered email.
-/api/auth/forgot-password (POST) - Send an email with a password reset link to the registered email.
-/api/courses (GET) - Get a list of all available courses.
-/api/courses/:id (GET) - Get details of a specific course by ID.
-/api/courses (POST) - Create a new course.
-/api/courses/:id (PUT) - Update an existing course by ID.
-/api/courses/:id (DELETE) - Delete a course by ID.
-/api/courses/:id/rate (POST) - Add a rating (out of 5) to a course. Sample API requests and responses:
-GET /api/courses: Get all courses
-Response: A list of all courses in the database
-GET /api/courses/:id: Get a single course by ID
-Response: The course with the specified ID
-POST /api/courses: Create a new course
-Request: The course details in the request body
-Response: The newly created course
-PUT /api/courses/:id: Update an existing course by ID
-Request: The updated course details in the request body
-Response: The updated course
-DELETE /api/courses/:id: Delete a course by ID
-Response: A success message indicating that the course has been deleted.
+## Authentication APIs
+
+1. **POST** `/api/auth/signup` - Create a new user (student or instructor) account.
+2. **POST** `/api/auth/login` - Log in using existing credentials and generate a JWT token.
+3. **POST** `/api/auth/verify-otp` - Verify the OTP sent to the user's registered email.
+4. **POST** `/api/auth/forgot-password` - Send an email with a password reset link to the registered email.
+
+---
+
+## Course APIs
+
+5. **GET** `/api/courses` - Get a list of all available courses.
+6. **GET** `/api/courses/:id` - Get details of a specific course by ID.
+7. **POST** `/api/courses` - Create a new course.
+8. **PUT** `/api/courses/:id` - Update an existing course by ID.
+9. **DELETE** `/api/courses/:id` - Delete a course by ID.
+10. **POST** `/api/courses/:id/rate` - Add a rating (out of 5) to a course.
+
+---
+
+## Sample API Requests and Responses
+
+11. **GET** `/api/courses`
+   - **Response**: A list of all courses in the database.
+
+12. **GET** `/api/courses/:id`
+   - **Response**: The course with the specified ID.
+
+13. **POST** `/api/courses`
+   - **Request**: The course details in the request body.
+   - **Response**: The newly created course.
+
+14. **PUT** `/api/courses/:id`
+   - **Request**: The updated course details in the request body.
+   - **Response**: The updated course.
+
+15. **DELETE** `/api/courses/:id`
+   - **Response**: A success message indicating that the course has been deleted.
 
 ### Installation
 Clone the repository: git clone https://github.com/username/repo.git
