@@ -35,6 +35,10 @@ export function getUserDetails(token, navigate) {
 }
 
 export async function getUserEnrolledCourses(token) {
+  if (!token) {
+    throw new Error("Authentication token is missing");
+  }
+  
   const toastId = toast.loading("Loading...")
   let result = []
   try {
@@ -48,20 +52,32 @@ export async function getUserEnrolledCourses(token) {
       }
     )
     console.log("AFTER Calling BACKEND API FOR ENROLLED COURSES");
-    // console.log(
-    //   "GET_USER_ENROLLED_COURSES_API API RESPONSE............",
-    //   response
-    // )
+    console.log("Response data:", response.data);
 
     if (!response.data.success) {
-      throw new Error(response.data.message)
+      throw new Error(response.data.message || "Failed to get enrolled courses")
     }
+    
+    // Ensure we have valid data
+    if (!response.data.data || !Array.isArray(response.data.data)) {
+      console.error("Invalid data format received:", response.data);
+      throw new Error("Invalid data format received from server");
+    }
+    
     result = response.data.data
   } catch (error) {
     console.log("GET_USER_ENROLLED_COURSES_API API ERROR............", error)
-    toast.error("Could Not Get Enrolled Courses")
+    console.log("Error response:", error.response?.data);
+    
+    // Don't show toast for 401 errors as they are handled by the interceptor
+    if (error.response?.status !== 401) {
+      toast.error("Could Not Get Enrolled Courses")
+    }
+    // Re-throw the error so the component can handle it
+    throw error
+  } finally {
+    toast.dismiss(toastId)
   }
-  toast.dismiss(toastId)
   return result
 }
 

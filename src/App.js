@@ -1,5 +1,6 @@
 import "./App.css";
 import {Route, Routes, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Home from "./pages/Home"
 import Navbar from "./components/common/Navbar"
 import OpenRoute from "./components/core/Auth/OpenRoute"
@@ -35,11 +36,12 @@ function App() {
   const navigate = useNavigate();
   
   const { user } = useSelector((state) => state.profile)
-
-
+  
   return (
-   <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-    <Navbar/>
+    
+    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+
+    <Navbar  />
     <Routes>
       <Route path="/" element={<Home/>} />
       <Route path="catalog/:catalogName" element={<Catalog/>} />

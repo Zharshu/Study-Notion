@@ -87,10 +87,11 @@ export const addCourseDetails = async (data, token) => {
   let result = null
   const toastId = toast.loading("Loading...")
   try {
-    const response = await apiConnector("POST", CREATE_COURSE_API, data, {
+    const headers = {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
-    })
+    }
+    const response = await apiConnector("POST", CREATE_COURSE_API, data, headers)
     console.log("CREATE COURSE API RESPONSE............", response)
     if (!response?.data?.success) {
       throw new Error("Could Not Add Course Details")

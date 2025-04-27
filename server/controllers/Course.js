@@ -134,6 +134,7 @@ exports.createCourse = async (req, res) => {
 // Edit Course Details
 exports.editCourse = async (req, res) => {
   try {
+    console.log("Edit course request body:", req.body)
     const { courseId } = req.body
     const updates = req.body
     const course = await Course.findById(courseId)
@@ -155,13 +156,28 @@ exports.editCourse = async (req, res) => {
 
     // Update only the fields that are present in the request body
     for (const key in updates) {
-      if (updates.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(updates, key)) {
         if (key === "tag" || key === "instructions") {
-          course[key] = JSON.parse(updates[key])
+          try {
+            course[key] = JSON.parse(updates[key])
+          } catch (parseError) {
+            console.error(`Error parsing ${key}:`, parseError)
+            return res.status(400).json({
+              success: false,
+              message: `Invalid JSON format for ${key}`,
+              error: parseError.message,
+            })
+          }
         } else {
           course[key] = updates[key]
         }
       }
+    }
+
+    // If status is being updated to "Published", ensure validation or permissions if needed
+    if (updates.status && updates.status === "Published") {
+      // Add any additional checks here if required
+      console.log(`Publishing course ${courseId}`);
     }
 
     await course.save()
@@ -191,7 +207,8 @@ exports.editCourse = async (req, res) => {
       data: updatedCourse,
     })
   } catch (error) {
-    console.error(error)
+    console.error("Edit course error:", error)
+    console.error("Request body at error:", req.body)
     res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -393,6 +410,7 @@ exports.getInstructorCourses = async (req, res) => {
 // Delete the Course
 exports.deleteCourse = async (req, res) => {
   try {
+    console.log("Delete course request body:", req.body)
     const { courseId } = req.body
 
     // Find the course
@@ -402,7 +420,7 @@ exports.deleteCourse = async (req, res) => {
     }
 
     // Unenroll students from the course
-    const studentsEnrolled = course.studentsEnroled
+    const studentsEnrolled = course.studentsEnrolled || []
     for (const studentId of studentsEnrolled) {
       await User.findByIdAndUpdate(studentId, {
         $pull: { courses: courseId },
@@ -433,7 +451,8 @@ exports.deleteCourse = async (req, res) => {
       message: "Course deleted successfully",
     })
   } catch (error) {
-    console.error(error)
+    console.error("Delete course error:", error)
+    console.error("Request body at error:", req.body)
     return res.status(500).json({
       success: false,
       message: "Server error",

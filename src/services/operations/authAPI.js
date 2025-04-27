@@ -91,6 +91,7 @@ export function login(email, password, navigate) {
       const response = await apiConnector("POST", LOGIN_API, {
         email,
         password,
+        // Remove checkUserPresent if it's not needed for login
       })
 
       console.log("LOGIN API RESPONSE............", response)
@@ -126,7 +127,9 @@ export function logout(navigate) {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     toast.success("Logged Out")
-    navigate("/")
+    if (typeof navigate === "function") {
+      navigate("/")
+    }
   }
 }
 

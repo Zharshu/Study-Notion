@@ -52,6 +52,53 @@ exports.createSection = async (req, res) => {
 	}
 };
 
+// CREATE a new subsection (video)
+exports.createSubSection = async (req, res) => {
+	try {
+		const { title, description, videoUrl, timeDuration, sectionId } = req.body;
+
+		if (!title || !videoUrl || !sectionId) {
+			return res.status(400).json({
+				success: false,
+				message: "Missing required properties",
+			});
+		}
+
+		// Create a new subsection
+		const newSubSection = await SubSection.create({
+			title,
+			description,
+			videoUrl,
+			timeDuration,
+		});
+
+		// Add the new subsection to the section's subSection array
+		const updatedSection = await Section.findByIdAndUpdate(
+			sectionId,
+			{
+				$push: {
+					subSection: newSubSection._id,
+				},
+			},
+			{ new: true }
+		)
+			.populate("subSection")
+			.exec();
+
+		res.status(200).json({
+			success: true,
+			message: "SubSection created successfully",
+			updatedSection,
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			message: "Internal server error",
+			error: error.message,
+		});
+	}
+};
+
 // UPDATE a section
 exports.updateSection = async (req, res) => {
 	try {

@@ -1,6 +1,6 @@
 // Import the required modules
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
 // Import the required controllers and middleware functions
 const {
@@ -43,6 +43,12 @@ router.post("/reset-password-token", resetPasswordToken)
 
 // Route for resetting user's password after verification
 router.post("/reset-password", resetPassword)
+
+// Import the Profile controller
+const Profile = require("../controllers/Profile")
+
+// Route to get enrolled courses with authentication
+router.get("/getEnrolledCourses", auth, Profile.getEnrolledCourses)
 
 // Export the router for use in the main application
 module.exports = router

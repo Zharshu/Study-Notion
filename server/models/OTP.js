@@ -30,7 +30,11 @@ async function sendVerificationEmail(email, otp) {
 			"Verification Email",
 			emailTemplate(otp)
 		);
-		console.log("Email sent successfully: ", mailResponse.response);
+		if (mailResponse && mailResponse.response) {
+			console.log("Email sent successfully: ", mailResponse.response);
+		} else {
+			console.log("Email sent successfully, but no response property in mailResponse");
+		}
 	} catch (error) {
 		console.log("Error occurred while sending email: ", error);
 		throw error;
@@ -43,7 +47,11 @@ OTPSchema.pre("save", async function (next) {
 
 	// Only send an email when a new document is created
 	if (this.isNew) {
-		await sendVerificationEmail(this.email, this.otp);
+		try {
+			await sendVerificationEmail(this.email, this.otp);
+		} catch (error) {
+			console.log("Failed to send verification email:", error);
+		}
 	}
 	next();
 });

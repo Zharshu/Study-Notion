@@ -9,10 +9,8 @@ const Profile = require("../models/Profile")
 require("dotenv").config()
 
 // Signup Controller for Registering USers
-
 exports.signup = async (req, res) => {
   try {
-    // Destructure fields from the request body
     const {
       firstName,
       lastName,
@@ -21,97 +19,75 @@ exports.signup = async (req, res) => {
       confirmPassword,
       accountType,
       contactNumber,
-      otp
-    } = req.body
-    // Check if All Details are there or not
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !otp
-    ) {
-      return res.status(403).send({
+      otp,
+    } = req.body;
+
+    if (!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
+      return res.status(400).send({
         success: false,
-        message: "All Fields are required",
-      })
+        message: "All fields are required.",
+      });
     }
-    // Check if password and confirm password match
+
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        message:
-          "Password and Confirm Password do not match. Please try again.",
-      })
+        message: "Password and Confirm Password do not match.",
+      });
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email })
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists. Please sign in to continue.",
-      })
+        message: "User already exists. Please sign in.",
+      });
     }
 
-    // Find the most recent OTP for the email
-    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
-    console.log(response)
-    if (response.length === 0) {
-      // OTP not found for the email
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    console.log("Signup OTP received:", otp);
+    console.log("Latest OTP from DB:", response.length > 0 ? response[0].otp : "No OTP found");
+    if (response.length === 0 || otp !== response[0].otp) {
       return res.status(400).json({
         success: false,
-        message: "The OTP is not valid",
-      })
-    } else if (otp !== response[0].otp) {
-      // Invalid OTP
-      return res.status(400).json({
-        success: false,
-        message: "The OTP is not valid",
-      })
+        message: "The OTP is not valid.",
+      });
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
-    let approved = ""
-    approved === "Instructor" ? (approved = false) : (approved = true)
-
-    // Create the Additional Profile For User
     const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
       about: null,
-      contactNumber: null,
-    })
+      contactNumber: contactNumber || null,
+    });
+
     const user = await User.create({
       firstName,
       lastName,
       email,
       contactNumber,
       password: hashedPassword,
-      accountType: accountType,
-      approved: approved,
+      accountType,
+      approved: accountType === "Instructor" ? false : true,
       additionalDetails: profileDetails._id,
       image: "",
-    })
+    });
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       user,
-      message: "User registered successfully",
-    })
+      message: "User registered successfully.",
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return res.status(500).json({
       success: false,
       message: "User cannot be registered. Please try again.",
-    })
+    });
   }
 }
-
 // Login controller for authenticating users
 exports.login = async (req, res) => {
   try {
@@ -188,12 +164,18 @@ exports.sendotp = async (req, res) => {
     const checkUserPresent = await User.findOne({ email })
     // to be used in case of signup
 
-    // If user found with provided email
+    // If user found with provided email, log them in instead of sending OTP
     if (checkUserPresent) {
-      // Return 401 Unauthorized status code with error message
-      return res.status(401).json({
-        success: false,
-        message: `User is Already Registered`,
+      const token = jwt.sign(
+        { email: checkUserPresent.email, id: checkUserPresent._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "24h" }
+      )
+      return res.status(200).json({
+        success: true,
+        message: "User logged in successfully",
+        token,
+        user: checkUserPresent,
       })
     }
 
@@ -202,7 +184,7 @@ exports.sendotp = async (req, res) => {
       lowerCaseAlphabets: false,
       specialChars: false,
     })
-    const result = await OTP.findOne({ otp: otp })
+    let result = await OTP.findOne({ otp: otp })
     console.log("Result is Generate OTP Func")
     console.log("OTP", otp)
     console.log("Result", result)
@@ -210,10 +192,28 @@ exports.sendotp = async (req, res) => {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
       })
+      result = await OTP.findOne({ otp: otp })
     }
     const otpPayload = { email, otp }
     const otpBody = await OTP.create(otpPayload)
     console.log("OTP Body", otpBody)
+
+    // Send OTP email
+    try {
+      const emailResponse = await mailSender(
+        email,
+        "Your OTP for StudyNotion",
+        `Your OTP for StudyNotion is ${otp}. It is valid for 10 minutes.`
+      )
+      if (emailResponse && emailResponse.response) {
+        console.log("OTP email sent successfully:", emailResponse.response)
+      } else {
+        console.log("OTP email sent successfully, but no response property in emailResponse")
+      }
+    } catch (emailError) {
+      console.log("Error sending OTP email:", emailError)
+    }
+
     res.status(200).json({
       success: true,
       message: `OTP Sent Successfully`,

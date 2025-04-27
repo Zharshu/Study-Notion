@@ -22,10 +22,10 @@ database.connect();
 app.use(express.json());
 app.use(cookieParser());
 app.use(
-	cors({
-		origin:'https://study-notion-harshit.onrender.com',
-		credentials:true,
-	})
+  cors({
+    origin: 'http://localhost:3000',  // frontend origin
+    credentials:true,
+  })
 )
 
 app.use(

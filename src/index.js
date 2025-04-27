@@ -9,9 +9,7 @@ import {configureStore} from "@reduxjs/toolkit"
 import { Toaster } from "react-hot-toast";
 
 
-const store = configureStore({
-  reducer:rootReducer,
-});
+import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

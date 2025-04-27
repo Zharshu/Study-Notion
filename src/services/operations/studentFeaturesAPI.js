@@ -48,10 +48,10 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
         console.log("PRINTING orderResponse", orderResponse);
         //options
         const options = {
-            key: process.env.RAZORPAY_KEY,
-            currency: orderResponse.data.message.currency,
-            amount: `${orderResponse.data.message.amount}`,
-            order_id:orderResponse.data.message.id,
+            key: process.env.REACT_APP_RAZORPAY_KEY,  // fixed environment variable for client
+            currency: orderResponse.data.data.currency,  // fixed to data field
+            amount: orderResponse.data.data.amount,      // fixed to data field and number type
+            order_id: orderResponse.data.data.id,        // fixed to data field and correct key
             name:"StudyNotion",
             description: "Thank You for Purchasing the Course",
             image:rzpLogo,
@@ -61,7 +61,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
             },
             handler: function(response) {
                 //send successful wala mail
-                sendPaymentSuccessEmail(response, orderResponse.data.message.amount,token );
+                sendPaymentSuccessEmail(response, orderResponse.data.data.amount,token );
                 //verifyPayment
                 verifyPayment({...response, courses}, token, navigate, dispatch);
             }
@@ -70,7 +70,7 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
         paymentObject.on("payment.failed", function(response) {
-            toast.error("oops, payment failed");
+            toast.error("Oops, payment failed");
             console.log(response.error);
         })
 
@@ -109,7 +109,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
         if(!response.data.success) {
             throw new Error(response.data.message);
         }
-        toast.success("payment Successful, ypou are addded to the course");
+        toast.success("Payment Successful, you are added to the course");
         navigate("/dashboard/enrolled-courses");
         dispatch(resetCart());
     }   
