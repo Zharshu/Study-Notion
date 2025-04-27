@@ -1,7 +1,7 @@
 # StudyNotion - EdTech Platform
 ## 🚀 Live Demo
 Experience the full functionality of Study Notion live. 🚀  
-👉 [Visit Live Site](https://study-notion-harshit.onrender.com/)
+👉 [Visit Live Site][https://study-notion-harshit.onrender.com/]
 
 
 ![Architecture](./images/mainpage.png)
