@@ -15,9 +15,9 @@ Main Page StudyNotion is a fully functional EdTech platform that enables users t
 - [Database](#database)
 - [Architecture Diagram](#architecture-diagram)
 - [API Design](#api-design)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
+- [Installation](#Installation)
+- [Configuration](#Configuration)
+- [Usage](#Usage)
 
 ## Introduction
 StudyNotion aims to provide a seamless and interactive learning experience for students, making education more accessible and engaging. Additionally, the platform serves as a platform for instructors to showcase their expertise and connect with learners across the globe.
@@ -125,6 +125,16 @@ The StudyNotion platform's API is designed following the REST architectural styl
 
 15. **DELETE** `/api/courses/:id`
    - **Response**: A success message indicating that the course has been deleted.
+     
+ -**Example**:
+
+```json
+{
+  "id": "course123",
+  "title": "Web Development",
+  "description": "Learn to build websites",
+  "rating": 4.8
+}
 
 ### Installation
 Clone the repository: git clone https://github.com/username/repo.git
