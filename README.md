@@ -343,117 +343,58 @@ This command starts both frontend and backend simultaneously.
 
 ---
 
-## 🎨 UI Features
+## Course APIs
 
-- **Responsive Design** - Mobile, tablet, and desktop optimized
-- **Loading States** - Skeleton screens and spinners
-- **Toast Notifications** - User feedback for actions
-- **Modal Dialogs** - Confirmations and forms
-- **Data Visualization** - Charts for analytics (Chart.js, Recharts)
-- **Video Player** - Custom video controls with progress tracking
-- **Search & Filter** - Course discovery tools
-- **Pagination** - Efficient data loading
-- **Dark Mode Ready** - TailwindCSS design system
+5. **GET** `/api/courses` - Get a list of all available courses.
+6. **GET** `/api/courses/:id` - Get details of a specific course by ID.
+7. **POST** `/api/courses` - Create a new course.
+8. **PUT** `/api/courses/:id` - Update an existing course by ID.
+9. **DELETE** `/api/courses/:id` - Delete a course by ID.
+10. **POST** `/api/courses/:id/rate` - Add a rating (out of 5) to a course.
 
 ---
 
-## 🧪 Testing & Development
+## Sample API Requests and Responses
 
-### **Backend Scripts**
+11. **GET** `/api/courses`
+   - **Response**: A list of all courses in the database.
 
-```bash
-cd server
+12. **GET** `/api/courses/:id`
+   - **Response**: The course with the specified ID.
 
-# Create admin user
-node scripts/createAdmin.js
+13. **POST** `/api/courses`
+   - **Request**: The course details in the request body.
+   - **Response**: The newly created course.
 
-# Make existing user admin
-node scripts/makeAdmin.js
+14. **PUT** `/api/courses/:id`
+   - **Request**: The updated course details in the request body.
+   - **Response**: The updated course.
 
-# Validate environment configuration
-node scripts/validateConfig.js
+15. **DELETE** `/api/courses/:id`
+   - **Response**: A success message indicating that the course has been deleted.
+     
+ -**Example**:
+
+```json
+{
+  "id": "course123",
+  "title": "Web Development",
+  "description": "Learn to build websites",
+  "rating": 4.8
+}
 ```
 
-### **Development Tools**
-
-- **Nodemon** - Auto-restart server on changes
-- **Concurrently** - Run frontend and backend together
-- **Redux DevTools** - Debug state management
-- **MongoDB Compass** - Database GUI
-
----
-
-## 📦 Deployment
-
-### **Backend (Node.js)**
-
-1. Set `NODE_ENV=production` in environment
-2. Configure production MongoDB URL
-3. Set secure `JWT_SECRET` (minimum 32 characters)
-4. Enable `ENABLE_TOKEN_ROTATION=true` for enhanced security
-5. Deploy to services like Render, Railway, or AWS
-6. Ensure environment variables are set
-
-### **Frontend (React)**
-
-1. Update `REACT_APP_BASE_URL` to production API URL
-2. Build production bundle: `npm run build`
-3. Deploy `build` folder to Vercel, Netlify, or similar
-4. Configure CORS on backend to allow frontend domain
-
----
-
-## 🤝 Contributing
-
-### **Code Guidelines**
-
-1. Follow **Service Layer Pattern** - Keep controllers thin
-2. Use **custom error classes** for error handling
-3. Write **descriptive commit messages**
-4. Follow **feature-based organization**
-5. Add **JSDoc comments** for functions
-6. Test endpoints before committing
-
-### **Adding Features**
-
-1. Create feature folder in `server/features/` or `src/features/`
-2. Implement service layer first (business logic)
-3. Create controller (HTTP handling)
-4. Define routes
-5. Update API endpoints in `src/services/api/endpoints.js`
-6. Add Redux slice if needed
-7. Create UI components
-
----
-
-## 📄 License
-
-This project is open-source and available for educational purposes.
-
----
-
-## 👨‍💻 Architecture Highlights
-
-- **Feature-Based Architecture** - Domain-driven design for scalability
-- **Service Layer Pattern** - Separation of HTTP and business logic
-- **Redux Toolkit** - Modern state management with thunks
-- **Axios Interceptors** - Automatic token refresh and error handling
-- **Cloudinary Integration** - Scalable media storage
-- **Razorpay Integration** - Secure payment processing
-- **Winston Logging** - Production-grade error tracking
-- **Custom Error Handling** - Consistent error responses
-- **Refresh Token Rotation** - Enhanced security
-
----
-
-## 📞 Support
-
-For detailed backend architecture documentation, see [`server/ARCHITECTURE.md`](server/ARCHITECTURE.md)
-
-For backend-specific setup, see [`server/README.md`](server/README.md)
-
----
-
-**Built with ❤️ for Modern EdTech**
-
-**Last Updated:** January 2026
+### Installation
+Clone the repository: git clone https://github.com/username/repo.git
+Navigate to the project directory: cd StudyNotion
+Install dependencies: npm install
+### Configuration
+Set up a MongoDB database and obtain the connection URL.
+Create a .env file in the root directory with the following environment variables:
+MONGODB_URI=<your-mongodb-connection-url>
+JWT_SECRET=<your-jwt-secret-key>
+### Usage
+Start the server: npm start
+Open a new terminal and navigate to the client directory: cd client
+Start the React development server: npm start
+Access the application in your browser at http://localhost:3000.
