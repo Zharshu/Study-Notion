@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
 import { sendOtp } from "../../../services/operations/authAPI"
-import { setSignupData } from "../../../slices/authSlice"
+import { setSignupData } from "../../../store/slices/authSlice"
 import { ACCOUNT_TYPE } from "../../../utils/constants"
 import Tab from "../../common/Tab"
 
@@ -52,10 +52,14 @@ function SignupForm() {
 
     // Setting signup data to state
     // To be used after otp verification
-    dispatch(setSignupData(signupData))
-    // Send OTP to user for verification
-    dispatch(sendOtp(formData.email, navigate))
+    dispatch(setSignupData(signupData))///-->REDUX ME DATA SAVE temprarilly 
 
+    // Send OTP to user for verification
+    dispatch(sendOtp(formData.email, navigate))//_>OTP Bjna ,sendOtp Function ko call kia 
+
+    // Ye function backend par /sendotp API ko POST request bhejta hai.
+//Backend OTP generate karta hai aur user ke email par bhej deta hai.
+//then VerifyEmail par OTP verify krne ke bad isko vha call kr dete hai
     // Reset
     setFormData({
       firstName: "",

@@ -1,9 +1,9 @@
 import { toast } from "react-hot-toast";
-import { studentEndpoints } from "../apis";
-import { apiConnector } from "../apiconnector";
+import { studentEndpoints } from "../api/endpoints";
+import { apiConnector } from "../api/client";
 import rzpLogo from "../../assets/Logo/rzp_logo.png"
-import { setPaymentLoading } from "../../slices/courseSlice";
-import { resetCart } from "../../slices/cartSlice";
+import { setPaymentLoading } from "../../features/instructor/slices/courseSlice";
+import { resetCart } from "../../features/student/slices/cartSlice";
 
 
 const {COURSE_PAYMENT_API, COURSE_VERIFY_API, SEND_PAYMENT_SUCCESS_EMAIL_API} = studentEndpoints;
@@ -120,3 +120,5 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
     toast.dismiss(toastId);
     dispatch(setPaymentLoading(false));
 }
+
+

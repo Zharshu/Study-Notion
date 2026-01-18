@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom"
 
 function OpenRoute({ children }) {
   const { token } = useSelector((state) => state.auth)
+//Agar token null hai (user login nahi hai), toh children render karo (matlab Login/Signup page dikhado).
 
   if (token === null) {
     return children

@@ -1,0 +1,65 @@
+/* Markdown Content Styling for AI Summary */
+.markdown-content {
+  @apply text-richblack-100;
+}
+
+.markdown-content h1 {
+  @apply text-2xl font-bold text-yellow-50 mt-6 mb-4;
+}
+
+.markdown-content h2 {
+  @apply text-xl font-semibold text-yellow-50 mt-5 mb-3;
+}
+
+.markdown-content h3 {
+  @apply text-lg font-semibold text-richblack-5 mt-4 mb-2;
+}
+
+.markdown-content p {
+  @apply mb-4 leading-relaxed;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  @apply mb-4 ml-6;
+}
+
+.markdown-content li {
+  @apply mb-2;
+}
+
+.markdown-content ul li {
+  @apply list-disc;
+}
+
+.markdown-content ol li {
+  @apply list-decimal;
+}
+
+.markdown-content code {
+  @apply bg-richblack-700 px-2 py-1 rounded text-yellow-300 text-sm font-mono;
+}
+
+.markdown-content pre {
+  @apply bg-richblack-700 p-4 rounded-lg overflow-x-auto mb-4;
+}
+
+.markdown-content pre code {
+  @apply bg-transparent p-0;
+}
+
+.markdown-content strong {
+  @apply font-semibold text-yellow-50;
+}
+
+.markdown-content em {
+  @apply italic;
+}
+
+.markdown-content a {
+  @apply text-blue-400 hover:text-blue-300 underline;
+}
+
+.markdown-content blockquote {
+  @apply border-l-4 border-yellow-500 pl-4 italic my-4 text-richblack-300;
+}

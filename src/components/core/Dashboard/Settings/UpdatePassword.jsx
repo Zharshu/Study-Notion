@@ -18,12 +18,15 @@ export default function UpdatePassword() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm()
 
   const submitPasswordForm = async (data) => {
     // console.log("password Data - ", data)
     try {
       await changePassword(token, data)
+      // Clear the form fields after successful password change
+      reset()
     } catch (error) {
       console.log("ERROR MESSAGE - ", error.message)
     }

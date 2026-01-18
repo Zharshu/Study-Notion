@@ -1,0 +1,262 @@
+/* ========================================
+   TAILWIND GLOBAL UTILITIES
+   ========================================
+   Common Tailwind class combinations extracted
+   for better code readability and reusability
+   ======================================== */
+
+/* ===== LAYOUT UTILITIES ===== */
+.container-custom {
+  @apply mx-auto w-11/12 max-w-maxContent;
+}
+
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.flex-between {
+  @apply flex items-center justify-between;
+}
+
+.flex-col-center {
+  @apply flex flex-col items-center justify-center;
+}
+
+.grid-center {
+  @apply grid place-items-center;
+}
+
+/* ===== TEXT UTILITIES ===== */
+.heading-xl {
+  @apply text-3xl font-bold text-richblack-5 sm:text-4xl;
+}
+
+.heading-lg {
+  @apply text-2xl font-bold text-richblack-5 sm:text-3xl;
+}
+
+.heading-md {
+  @apply text-xl font-semibold text-richblack-5 sm:text-2xl;
+}
+
+.text-gradient-yellow {
+  @apply bg-gradient-to-br from-yellow-200 to-yellow-400 bg-clip-text text-transparent;
+}
+
+.text-gradient-blue {
+  @apply bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] bg-clip-text text-transparent;
+}
+
+.text-body {
+  @apply text-base text-richblack-300;
+}
+
+.text-muted {
+  @apply text-sm text-richblack-400;
+}
+
+/* ===== BUTTON UTILITIES ===== */
+.btn-primary {
+  @apply cursor-pointer rounded-md bg-yellow-50 px-6 py-3 font-semibold text-richblack-900 transition-all duration-200 hover:scale-95;
+}
+
+.btn-secondary {
+  @apply cursor-pointer rounded-md bg-richblack-800 px-6 py-3 font-semibold text-richblack-5 transition-all duration-200 hover:bg-richblack-700;
+}
+
+/* .btn-danger {
+  @apply cursor-pointer rounded-md bg-red-600 px-6 py-3 font-semibold text-white transition-all duration-200 hover:bg-red-700;
+} */
+
+.btn-disabled {
+  @apply cursor-not-allowed rounded-md bg-richblack-700 px-6 py-3 font-semibold text-richblack-400;
+}
+
+.btn-sm {
+  @apply cursor-pointer rounded-md bg-yellow-50 px-4 py-2 text-sm font-semibold text-richblack-900 transition-all duration-200 hover:scale-95;
+}
+
+/* ===== CARD UTILITIES ===== */
+.card {
+  @apply rounded-lg bg-richblack-800 p-6;
+}
+
+.card-hover {
+  @apply rounded-lg bg-richblack-800 p-6 transition-all duration-200 hover:scale-105 hover:shadow-lg;
+}
+
+.card-bordered {
+  @apply rounded-lg border border-richblack-700 bg-richblack-800 p-6;
+}
+
+/* ===== INPUT UTILITIES ===== */
+.input-field {
+  @apply w-full rounded-lg bg-richblack-700 p-3 text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none;
+}
+
+.input-label {
+  @apply text-sm text-richblack-5;
+}
+
+/* .input-error {
+  @apply text-xs text-red-500;
+} */
+
+/* ===== MODAL UTILITIES ===== */
+.modal-overlay {
+  @apply fixed inset-0 z-[1000] grid place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm;
+}
+
+.modal-container {
+  @apply w-11/12 max-w-lg rounded-lg border border-richblack-400 bg-richblack-800 p-6;
+}
+
+.modal-title {
+  @apply text-2xl font-semibold text-richblack-5;
+}
+
+.modal-description {
+  @apply mt-3 mb-5 leading-6 text-richblack-200;
+}
+
+/* ===== TABLE UTILITIES ===== */
+.table-container {
+  @apply overflow-x-auto rounded-lg border border-richblack-700;
+}
+
+.table-header {
+  @apply bg-richblack-700 text-left text-sm font-medium text-richblack-100;
+}
+
+.table-cell {
+  @apply border-b border-richblack-700 p-4 text-richblack-100;
+}
+
+.table-row-hover {
+  @apply transition-colors duration-150 hover:bg-richblack-700;
+}
+
+/* ===== BADGE UTILITIES ===== */
+/* .badge-success {
+  @apply rounded-full bg-green-600 px-3 py-1 text-xs font-semibold text-white;
+} */
+
+/* .badge-warning {
+  @apply rounded-full bg-yellow-500 px-3 py-1 text-xs font-semibold text-richblack-900;
+} */
+
+/* .badge-danger {
+  @apply rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white;
+} */
+
+/* .badge-info {
+  @apply rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white;
+} */
+
+/* ===== SIDEBAR UTILITIES ===== */
+.sidebar-link {
+  @apply relative px-8 py-2 text-sm font-medium text-richblack-300 transition-all duration-200;
+}
+
+.sidebar-link-active {
+  @apply relative px-8 py-2 text-sm font-medium text-yellow-50 transition-all duration-200;
+}
+
+/* ===== LOADING UTILITIES ===== */
+.loading-screen {
+  @apply grid min-h-[calc(100vh-3.5rem)] place-items-center;
+}
+
+.loading-section {
+  @apply grid min-h-[400px] place-items-center;
+}
+
+/* ===== FORM UTILITIES ===== */
+.form-group {
+  @apply flex flex-col gap-2;
+}
+
+.form-row {
+  @apply flex flex-col gap-4 sm:flex-row;
+}
+
+.form-actions {
+  @apply flex items-center justify-end gap-4 pt-4;
+}
+
+/* ===== DIVIDER UTILITIES ===== */
+.divider {
+  @apply h-[1px] w-full bg-richblack-700;
+}
+
+.divider-vertical {
+  @apply h-full w-[1px] bg-richblack-700;
+}
+
+/* ===== SECTION UTILITIES ===== */
+.section {
+  @apply mx-auto my-20 w-11/12 max-w-maxContent;
+}
+
+.section-dark {
+  @apply bg-richblack-900 py-20;
+}
+
+.section-light {
+  @apply bg-pure-greys-5 py-20;
+}
+
+/* ===== ANIMATION UTILITIES ===== */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===== HOVER EFFECTS ===== */
+.hover-scale {
+  @apply transition-transform duration-200 hover:scale-105;
+}
+
+.hover-shadow {
+  @apply transition-shadow duration-200 hover:shadow-lg;
+}
+
+.hover-yellow {
+  @apply transition-colors duration-200 hover:text-yellow-400;
+}
+
+/* ===== RESPONSIVE TEXT ===== */
+.responsive-heading {
+  @apply text-2xl font-bold sm:text-3xl lg:text-4xl;
+}
+
+.responsive-subheading {
+  @apply text-xl font-semibold sm:text-2xl lg:text-3xl;
+}
+
+.responsive-body {
+  @apply text-sm sm:text-base lg:text-lg;
+}

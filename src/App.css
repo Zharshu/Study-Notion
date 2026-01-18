@@ -5,6 +5,8 @@
 html,
 body {
   overflow-x: hidden;
+  background-color: #000814;
+  min-height: 100vh;
 }
 
 /* ===== Scrollbar CSS ===== */
@@ -248,3 +250,26 @@ details > summary::-webkit-details-marker {
   background-color: #ffffff; /* White background */
   color: #000000; /* Black text */
 }
+
+ /* Swiper Review Slider Styles */
+ .review-swiper {
+   width: 100% !important;
+   height: auto !important;
+   overflow: hidden !important;
+ }
+ 
+ .review-swiper .swiper-slide {
+   height: auto !important;
+   display: flex !important;
+   align-items: stretch !important;
+ }
+
+.review-swiper .swiper-wrapper {
+  align-items: stretch !important;
+  display: flex !important;
+}
+
+ .review-swiper .swiper-container {
+   width: 100% !important;
+   height: auto !important;
+ }

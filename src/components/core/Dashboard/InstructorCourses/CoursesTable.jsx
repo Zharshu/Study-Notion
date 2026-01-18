@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table"
 
-import { setCourse, setEditCourse } from "../../../../slices/courseSlice"
+import { setCourse } from "../../../../features/instructor/slices/courseSlice"
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
 import { useState } from "react"
 import { FaCheck } from "react-icons/fa"
@@ -16,7 +16,7 @@ import {
   fetchInstructorCourses,
 } from "../../../../services/operations/courseDetailsAPI"
 import { COURSE_STATUS } from "../../../../utils/constants"
-import ConfirmationModal from "../../../common/ConfirmationModal"
+import ConfirmationModal from "../../../../shared/components/modals/ConfirmationModal"
 
 export default function CoursesTable({ courses, setCourses }) {
   const dispatch = useDispatch()
@@ -72,7 +72,7 @@ export default function CoursesTable({ courses, setCourses }) {
                 key={course._id}
                 className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
               >
-                <Td className="flex flex-1 gap-x-4">
+                <Td className="flex flex-1 gap-x-4 cursor-pointer" onClick={() => navigate(`/view-course/${course._id}`)}>
                   <img
                     src={course?.thumbnail}
                     alt={course?.courseName}
