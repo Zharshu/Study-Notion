@@ -21,7 +21,7 @@ const VideoDetails = () => {
   const { courseSectionData, courseEntireData, completedLectures } =
     useSelector((state) => state.viewCourse)
 
-  const [videoData, setVideoData] = useState([])
+  const [videoData, setVideoData] = useState(null)
   const [previewSource, setPreviewSource] = useState("")
   const [videoEnded, setVideoEnded] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -36,14 +36,40 @@ const VideoDetails = () => {
         const filteredData = courseSectionData.filter(
           (course) => course._id === sectionId
         )
-        // console.log("filteredData", filteredData)
+        console.log("🔍 Looking for sectionId:", sectionId)
+        console.log("📚 Filtered section data:", filteredData)
         const filteredVideoData = filteredData?.[0]?.subSection.filter(
           (data) => data._id === subSectionId
         )
-        // console.log("filteredVideoData", filteredVideoData)
-        setVideoData(filteredVideoData[0])
-        setPreviewSource(courseEntireData.thumbnail)
-        setVideoEnded(false)
+        console.log("🔍 Looking for subSectionId:", subSectionId)
+        
+        if (filteredVideoData && filteredVideoData.length > 0) {
+          console.log("✅ Video data found:", filteredVideoData[0])
+          setVideoData(filteredVideoData[0])
+          setPreviewSource(courseEntireData.thumbnail)
+          setVideoEnded(false)
+        } else {
+          console.error("❌ No video data found for subsection:", subSectionId)
+          // Fallback 1: If specific video not found, try to use the first video of the CURRENT section
+          if (filteredData?.[0]?.subSection && filteredData[0].subSection.length > 0) {
+             const fallbackVideo = filteredData[0].subSection[0];
+             console.log("⚠️ Falling back to first video of current section:", fallbackVideo);
+             setVideoData(fallbackVideo);
+             setPreviewSource(courseEntireData.thumbnail);
+             setVideoEnded(false);
+          }
+          // Fallback 2: ULTIMATE FALLBACK - Use first video of FIRST section in course
+          else if (courseSectionData?.[0]?.subSection && courseSectionData[0].subSection.length > 0) {
+            const ultimateFallbackVideo = courseSectionData[0].subSection[0];
+            console.log("⚠️ Ultimate fallback to first video of first section:", ultimateFallbackVideo);
+            setVideoData(ultimateFallbackVideo);
+            setPreviewSource(courseEntireData.thumbnail);
+            setVideoEnded(false);
+          }
+          else {
+             console.error("❌ No videos found in this course at all!");
+          }
+        }
       }
     })()
   }, [courseSectionData, courseEntireData, location.pathname])
@@ -171,6 +197,11 @@ const VideoDetails = () => {
 
   return (
     <div className="flex flex-col gap-5 text-white max-w-full">
+      {/* Title and Description - Now appears first */}
+      <h1 className="text-3xl font-semibold break-words">{videoData?.title}</h1>
+      <p className="pb-2 break-words">{videoData?.description}</p>
+
+      {/* Video Player */}
       {!videoData ? (
         <img
           src={previewSource}
@@ -239,9 +270,6 @@ const VideoDetails = () => {
           )}
         </Player>
       )}
-
-      <h1 className="mt-4 text-3xl font-semibold break-words">{videoData?.title}</h1>
-      <p className="pt-2 pb-6 break-words">{videoData?.description}</p>
       
       {/* AI Video Summary */}
       {videoData?.aiSummary && (

@@ -59,16 +59,16 @@ export default function ChangeProfilePicture() {
   }, [imageFile])
   return (
     <>
-      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12 text-richblack-5">
-        <div className="flex items-center gap-x-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6 sm:p-8 sm:px-12 text-richblack-5">
+        <div className="flex items-center gap-x-4 w-full sm:w-auto">
           <img
             src={previewSource || user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
+            className="aspect-square w-[78px] flex-shrink-0 rounded-full object-cover"
           />
-          <div className="space-y-2">
-            <p>Change Profile Picture</p>
-            <div className="flex flex-row gap-3">
+          <div className="space-y-2 flex-1 min-w-0">
+            <p className="text-sm sm:text-base">Change Profile Picture</p>
+            <div className="flex flex-row gap-3 flex-wrap">
               <input
                 type="file"
                 ref={fileInputRef}
@@ -79,16 +79,18 @@ export default function ChangeProfilePicture() {
               <button
                 onClick={handleClick}
                 disabled={loading}
-                className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
+                className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50 text-sm sm:text-base"
               >
                 Select
               </button>
               <IconBtn
                 text={loading ? "Uploading..." : "Upload"}
                 onclick={handleFileUpload}
+                customClasses="!py-2 !px-5 text-sm sm:text-base"
+                disabled={loading}
               >
                 {!loading && (
-                  <FiUpload className="text-lg text-richblack-900" />
+                  <FiUpload className="text-base text-richblack-900" />
                 )}
               </IconBtn>
             </div>

@@ -5,18 +5,28 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import rootReducer from "./reducer";
-import {configureStore} from "@reduxjs/toolkit"
+import { configureStore } from "@reduxjs/toolkit";
 import { Toaster } from "react-hot-toast";
-
 
 import store from "./store/index";
 
+// Suppress ResizeObserver loop errors (harmless warning from ProgressBar component)
+const resizeObserverLoopErr =
+  /ResizeObserver loop completed with undelivered notifications/;
+const consoleError = console.error;
+console.error = (...args) => {
+  if (typeof args[0] === "string" && resizeObserverLoopErr.test(args[0])) {
+    return;
+  }
+  consoleError(...args);
+};
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Provider store = {store}>
+  <Provider store={store}>
     <BrowserRouter>
-        <App />
-        <Toaster/>
-      </BrowserRouter>
-  </Provider>
+      <App />
+      <Toaster />
+    </BrowserRouter>
+  </Provider>,
 );

@@ -18,14 +18,8 @@ const mongoose = require("mongoose");
  * @returns {Object} Updated user details
  */
 exports.updateProfile = async (userId, updateData) => {
-  const {
-    firstName,
-    lastName,
-    dateOfBirth = "",
-    about = "",
-    contactNumber = "",
-    gender = "",
-  } = updateData;
+  const { firstName, lastName, dateOfBirth, about, contactNumber, gender } =
+    updateData;
 
   // Find user
   const user = await User.findById(userId);
@@ -46,10 +40,11 @@ exports.updateProfile = async (userId, updateData) => {
     throw new NotFoundError("Profile not found");
   }
 
-  profile.dateOfBirth = dateOfBirth;
-  profile.about = about;
-  profile.contactNumber = contactNumber;
-  profile.gender = gender;
+  if (dateOfBirth !== undefined) profile.dateOfBirth = dateOfBirth;
+  if (about !== undefined) profile.about = about;
+  if (contactNumber !== undefined) profile.contactNumber = contactNumber;
+  if (gender !== undefined) profile.gender = gender;
+
   await profile.save();
 
   // Return updated user with details
@@ -70,12 +65,33 @@ exports.deleteAccount = async (userId) => {
     throw new NotFoundError("User not found");
   }
 
+  // Check if user is an instructor with active courses
+  if (user.accountType === "Instructor") {
+    const instructorCourses = await Course.find({ instructor: userId });
+
+    // Check if any course has enrolled students
+    const hasStudents = instructorCourses.some(
+      (course) => course.studentsEnrolled && course.studentsEnrolled.length > 0,
+    );
+
+    if (hasStudents) {
+      throw new Error(
+        "Cannot delete account. You have courses with enrolled students. Please contact support for assistance.",
+      );
+    }
+
+    // Delete instructor's courses (if no students enrolled)
+    if (instructorCourses.length > 0) {
+      await Course.deleteMany({ instructor: userId });
+    }
+  }
+
   // Delete Profile
   if (user.additionalDetails) {
     await Profile.findByIdAndDelete(user.additionalDetails);
   }
 
-  // Unenroll from all courses
+  // Unenroll from all courses (for students)
   // Optimized: Use updateMany instead of loop
   if (user.courses && user.courses.length > 0) {
     await Course.updateMany(
@@ -91,6 +107,40 @@ exports.deleteAccount = async (userId) => {
   await CourseProgress.deleteMany({ userId: userId });
 
   return { message: "User deleted successfully" };
+};
+
+/**
+ * Check if instructor can delete account
+ * @param {string} userId - User ID
+ * @returns {Object} canDelete status and message
+ */
+exports.canDeleteAccount = async (userId) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  // Students can always delete
+  if (user.accountType !== "Instructor") {
+    return { canDelete: true, message: "Account can be deleted" };
+  }
+
+  // Check instructor's courses
+  const instructorCourses = await Course.find({ instructor: userId });
+
+  const hasStudents = instructorCourses.some(
+    (course) => course.studentsEnrolled && course.studentsEnrolled.length > 0,
+  );
+
+  if (hasStudents) {
+    return {
+      canDelete: false,
+      message:
+        "You have courses with enrolled students. Cannot delete account.",
+    };
+  }
+
+  return { canDelete: true, message: "Account can be deleted" };
 };
 
 /**

@@ -75,14 +75,14 @@ exports.toggleUserSuspension = async (userId, reason, suspend = true) => {
         "Account Suspended",
         accountSuspensionTemplate(
           `${user.firstName} ${user.lastName}`,
-          user.suspensionReason
-        )
+          user.suspensionReason,
+        ),
       );
     } else {
       await mailSender(
         user.email,
         "Account Restored",
-        accountUnsuspensionTemplate(`${user.firstName} ${user.lastName}`)
+        accountUnsuspensionTemplate(`${user.firstName} ${user.lastName}`),
       );
     }
     emailSent = true;
@@ -128,8 +128,8 @@ exports.deleteUser = async (userId) => {
         deletedUser.email,
         "Account Deleted",
         accountDeletionTemplate(
-          `${deletedUser.firstName} ${deletedUser.lastName}`
-        )
+          `${deletedUser.firstName} ${deletedUser.lastName}`,
+        ),
       );
       emailSent = true;
     }
@@ -179,6 +179,10 @@ exports.updateCourseApproval = async (courseId, status, reason) => {
   }
 
   course.approvalStatus = status;
+  if (status === "Approved") {
+    course.status = "Published";
+  }
+
   if (status === "Rejected") {
     course.rejectionReason = reason || "No reason provided";
   }
@@ -208,7 +212,7 @@ exports.getPlatformStats = async () => {
   // DEBUG: Check all courses and their approval status
   const allCourses = await Course.find(
     {},
-    { courseName: 1, approvalStatus: 1, status: 1 }
+    { courseName: 1, approvalStatus: 1, status: 1 },
   );
   console.log("=== ALL COURSES DEBUG ===");
   console.log("Total courses in DB:", totalCourses);
@@ -259,7 +263,7 @@ exports.getPlatformStats = async () => {
 
   // Calculate total revenue from enrolled students
   const courses = await Course.find({ approvalStatus: "Approved" }).select(
-    "price studentsEnrolled"
+    "price studentsEnrolled",
   );
   let totalRevenue = 0;
   courses.forEach((course) => {

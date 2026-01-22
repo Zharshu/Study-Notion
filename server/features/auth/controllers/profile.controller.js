@@ -1,5 +1,5 @@
-const profileService = require('../services/profile.service');
-const { successResponse } = require('../../../shared/utils/responseHandler');
+const profileService = require("../services/profile.service");
+const { successResponse } = require("../../../shared/utils/responseHandler");
 
 /**
  * Update Profile
@@ -61,7 +61,12 @@ exports.getEnrolledCourses = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const result = await profileService.getEnrolledCourses(userId);
-    return successResponse(res, 200, "Enrolled courses fetched successfully", result);
+    return successResponse(
+      res,
+      200,
+      "Enrolled courses fetched successfully",
+      result,
+    );
   } catch (error) {
     next(error);
   }
@@ -74,7 +79,22 @@ exports.instructorDashboard = async (req, res, next) => {
   try {
     const instructorId = req.user.id;
     const result = await profileService.instructorDashboard(instructorId);
-    return successResponse(res, 200, "Dashboard stats fetched successfully", { courses: result });
+    return successResponse(res, 200, "Dashboard stats fetched successfully", {
+      courses: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Check if user can delete account
+ */
+exports.canDeleteAccount = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const result = await profileService.canDeleteAccount(userId);
+    return successResponse(res, 200, "Check completed", result);
   } catch (error) {
     next(error);
   }

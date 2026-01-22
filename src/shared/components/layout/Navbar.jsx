@@ -2,12 +2,13 @@ import { useEffect, useState } from "react"
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
 import { BsChevronDown } from "react-icons/bs"
 import { useSelector, useDispatch } from "react-redux"
-import { Link, matchPath, useLocation } from "react-router-dom"
+import { Link, matchPath, useLocation, useNavigate } from "react-router-dom"
 import { IoClose } from "react-icons/io5"
 
 import logo from "../../../assets/Logo/Logo-Full-Light.png"
 import { NavbarLinks } from "../../../data/navbar-links"
 import { fetchCourseCategories } from "../../../services/operations/categoryAPI"
+import { logout } from "../../../services/operations/authAPI"
 import { ACCOUNT_TYPE } from "../../../utils/constants"
 import ProfileDropdown from "../../../components/core/Auth/ProfileDropDown"
 
@@ -19,6 +20,7 @@ function Navbar() {
   const { allCategories: subLinks, loading } = useSelector((state) => state.category)
   const location = useLocation()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [catalogOpen, setCatalogOpen] = useState(false)
@@ -233,6 +235,31 @@ function Navbar() {
                 )
               ))}
               
+              {/* Dashboard Link for logged-in users */}
+              {token !== null && (
+                <div className="border-t border-richblack-700 pt-4 mt-4">
+                  <Link
+                    to="/dashboard/my-profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-richblack-25 hover:text-yellow-25 text-lg font-semibold block mb-3"
+                  >
+                    Dashboard
+                  </Link>
+                  
+                  {/* Logout button */}
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      if (window.confirm("Are you sure you want to logout?")) {
+                        dispatch(logout(navigate));
+                      }
+                    }}
+                    className="text-red-300 hover:text-red-400 text-lg font-semibold block w-full text-left"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
 
             </nav>
           </div>

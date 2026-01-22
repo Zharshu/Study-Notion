@@ -49,7 +49,7 @@ export default function VideoDetailsSidebar({ setReviewModal, sidebarOpen, setSi
         ></div>
       )}
 
-      <div className={`flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 
+      <div className={`flex h-screen md:h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 
         ${sidebarOpen ? "fixed inset-y-0 left-0 z-50 translate-x-0" : "fixed inset-y-0 left-0 z-50 -translate-x-full"} 
         transition-transform duration-300 ease-in-out md:fixed md:top-[3.5rem] md:left-0 md:translate-x-0 md:bg-richblack-800`}>
         <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">

@@ -118,7 +118,7 @@ exports.deleteCategory = async (categoryId) => {
 
   if (totalCourses > 0) {
     throw new ValidationError(
-      `Cannot delete category with ${totalCourses} course(s). Please reassign or delete all courses first.`
+      `Cannot delete category with ${totalCourses} course(s). Please reassign or delete all courses first.`,
     );
   }
 

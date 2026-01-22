@@ -50,7 +50,7 @@ export default function Instructor() {
           <div className="spinner"></div>
         ) : courses.length > 0 ? (
           <div>
-            <div className="my-4 flex h-[450px] space-x-4">
+            <div className="my-4 flex flex-col md:flex-row md:h-[450px] gap-4">
               {/* Render chart / graph */}
               {totalAmount > 0 || totalStudents > 0 ? (
                 <InstructorChart courses={instructorData} />
@@ -63,9 +63,9 @@ export default function Instructor() {
                 </div>
               )}
               {/* Total Statistics */}
-              <div className="flex min-w-[250px] flex-col rounded-md bg-richblack-800 p-6">
+              <div className="flex md:min-w-[250px] flex-col rounded-md bg-richblack-800 p-6">
                 <p className="text-lg font-bold text-richblack-5">Statistics</p>
-                <div className="mt-4 space-y-4">
+                <div className="mt-4 grid grid-cols-2 md:grid-cols-1 gap-4">
                   <div>
                     <p className="text-lg text-richblack-200">Total Courses</p>
                     <p className="text-3xl font-semibold text-richblack-50">
@@ -78,7 +78,7 @@ export default function Instructor() {
                       {totalStudents}
                     </p>
                   </div>
-                  <div>
+                  <div className="col-span-2 md:col-span-1">
                     <p className="text-lg text-richblack-200">Total Income</p>
                     <p className="text-3xl font-semibold text-richblack-50">
                       Rs. {totalAmount}
@@ -95,13 +95,17 @@ export default function Instructor() {
                   <p className="text-xs font-semibold text-yellow-50">View All</p>
                 </Link>
               </div>
-              <div className="my-4 flex items-start space-x-6">
+              <div className="my-4 flex gap-4 overflow-x-auto pb-2">
                 {courses.slice(0, 3).map((course) => (
-                  <div key={course._id} className="w-1/3">
+                  <Link 
+                    key={course._id} 
+                    to={`/courses/${course._id}`}
+                    className="min-w-[280px] md:min-w-0 md:w-1/3 flex-shrink-0 cursor-pointer transition-transform hover:scale-[1.02]"
+                  >
                     <img
                       src={course.thumbnail}
                       alt={course.courseName}
-                      className="h-[201px] w-full rounded-md object-cover"
+                      className="h-[180px] sm:h-[201px] w-full rounded-md object-cover"
                     />
                     <div className="mt-3 w-full">
                       <p className="text-sm font-medium text-richblack-50">
@@ -119,7 +123,7 @@ export default function Instructor() {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

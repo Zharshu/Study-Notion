@@ -73,22 +73,22 @@ const VideoSummary = ({ aiSummary, playerRef }) => {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-richblack-700 px-6 pt-4">
+      {/* Tabs - 2x2 Grid Layout on Mobile, 1 Row on Desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 border-b border-richblack-700 px-6 pt-4">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 rounded-t-lg px-4 py-2 font-medium transition-all ${
+              className={`flex items-center justify-center gap-2 rounded-t-lg px-4 py-2 font-medium transition-all ${
                 activeTab === tab.id
                   ? 'bg-richblack-700 text-yellow-50'
                   : 'text-richblack-300 hover:bg-richblack-700/50 hover:text-richblack-100'
               }`}
             >
               <Icon className="text-lg" />
-              {tab.label}
+              <span className="text-sm sm:text-base">{tab.label}</span>
             </button>
           );
         })}

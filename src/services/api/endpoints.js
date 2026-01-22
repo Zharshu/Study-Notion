@@ -111,4 +111,5 @@ export const settingsEndpoints = {
   UPDATE_PROFILE_API: BASE_URL + "/auth/updateProfile",
   CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/auth/deleteProfile",
+  CAN_DELETE_ACCOUNT_API: BASE_URL + "/auth/canDeleteAccount",
 };

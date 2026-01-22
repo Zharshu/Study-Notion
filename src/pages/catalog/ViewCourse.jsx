@@ -87,7 +87,7 @@ export default function ViewCourse() {
 
             {/* Scrollable Content Area */}
             <div className="flex-1 overflow-auto">
-              <div className="mx-6">
+              <div className="mx-6 mt-4">
                 <Outlet />
               </div>
               <div className="mx-6 mb-6 mt-4 flex justify-center">

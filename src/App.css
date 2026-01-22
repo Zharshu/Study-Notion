@@ -7,6 +7,8 @@ body {
   overflow-x: hidden;
   background-color: #000814;
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* ===== Scrollbar CSS ===== */

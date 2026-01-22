@@ -23,11 +23,16 @@ const Catalog = () => {
         const getCategories = async() => {
             try {
                 const res = await apiConnector("GET", categories.CATEGORIES_API);
-                const category = res?.data?.data?.filter((ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName)[0];
-                if (category) {
-                    setCategoryId(category._id);
+                const categoriesData = res?.data?.data;
+                if (categoriesData && Array.isArray(categoriesData)) {
+                    const category = categoriesData.filter((ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName)[0];
+                    if (category) {
+                        setCategoryId(category._id);
+                    } else {
+                        console.error("Category not found:", catalogName);
+                    }
                 } else {
-                    console.error("Category not found:", catalogName);
+                    console.error("Invalid categories data:", res);
                 }
             } catch (error) {
                 console.error("Error fetching categories:", error);
@@ -81,15 +86,15 @@ const Catalog = () => {
       return (
         <>
           {/* Hero Section */}
-          <div className=" box-content bg-richblack-800 px-4">
-            <div className="mx-auto flex min-h-[150px] max-w-maxContentTab flex-col justify-center gap-2 lg:max-w-maxContent ">
+          <div className=" box-content bg-richblack-800 px-4 py-6 sm:py-0">
+            <div className="mx-auto flex min-h-[120px] sm:min-h-[150px] max-w-maxContentTab flex-col justify-center gap-2 lg:max-w-maxContent ">
               <p className="text-sm text-richblack-300">
                 {`Home / Catalog / `}
                 <span className="text-yellow-25">
                   {catalogPageData?.data?.selectedCategory?.name}
                 </span>
               </p>
-              <p className="text-3xl text-richblack-5">
+              <p className="text-xl sm:text-3xl font-bold text-richblack-5">
                 {catalogPageData?.data?.selectedCategory?.name}
               </p>
               <p className="max-w-[870px] text-richblack-200">
@@ -99,13 +104,17 @@ const Catalog = () => {
           </div>
     
           {/* Section 1: Category Courses */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-8 py-12 lg:max-w-maxContent">
-            <div className="section_heading">{catalogPageData?.data?.selectedCategory?.name}</div>
+          <div className="mx-auto box-content w-full max-w-maxContentTab py-8 sm:py-12 lg:max-w-maxContent">
+            <div className="px-4 sm:px-8">
+              <div className="text-2xl sm:text-3xl font-bold text-richblack-5 mb-4">{catalogPageData?.data?.selectedCategory?.name}</div>
+            </div>
             <div className="py-8">
               {catalogPageData?.data?.selectedCategory?.courses?.length > 0 ? (
-                <CourseSlider Courses={catalogPageData?.data?.selectedCategory?.courses} />
+            <div className="pl-4 pr-5 sm:pl-8 sm:pr-10">
+              <CourseSlider Courses={catalogPageData?.data?.selectedCategory?.courses} />
+                </div>
               ) : (
-                <div className="grid min-h-[200px] place-items-center">
+                <div className="grid min-h-[200px] place-items-center px-4 sm:px-8">
                   <div className="text-center">
                     <p className="text-2xl font-semibold text-richblack-5">No Courses in This Category</p>
                     <p className="mt-2 text-richblack-300">{catalogPageData?.data?.selectedCategory?.name} doesn't have any courses yet.</p>
@@ -116,31 +125,33 @@ const Catalog = () => {
           </div>
 
           {/* Section 2: Courses to get you started */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-8 py-12 lg:max-w-maxContent">
-            <div className="section_heading">Courses to get you started</div>
-            <div className="my-4 flex border-b border-b-richblack-600 text-sm">
-              <p
-                className={`px-4 py-2 ${
-                  active === 1
-                    ? "border-b border-b-yellow-25 text-yellow-25"
-                    : "text-richblack-50"
-                } cursor-pointer`}
-                onClick={() => setActive(1)}
-              >
-                Most Popular
-              </p>
-              <p
-                className={`px-4 py-2 ${
-                  active === 2
-                    ? "border-b border-b-yellow-25 text-yellow-25"
-                    : "text-richblack-50"
-                } cursor-pointer`}
-                onClick={() => setActive(2)}
-              >
-                New
-              </p>
+          <div className="mx-auto box-content w-full max-w-maxContentTab py-8 sm:py-12 lg:max-w-maxContent">
+            <div className="px-4 sm:px-8">
+              <div className="text-2xl sm:text-3xl font-bold text-richblack-5 mb-4">Courses to get you started</div>
+              <div className="my-4 flex border-b border-b-richblack-600 text-sm">
+                <p
+                  className={`px-4 py-2 ${
+                    active === 1
+                      ? "border-b border-b-yellow-25 text-yellow-25"
+                      : "text-richblack-50"
+                  } cursor-pointer`}
+                  onClick={() => setActive(1)}
+                >
+                  Most Popular
+                </p>
+                <p
+                  className={`px-4 py-2 ${
+                    active === 2
+                      ? "border-b border-b-yellow-25 text-yellow-25"
+                      : "text-richblack-50"
+                  } cursor-pointer`}
+                  onClick={() => setActive(2)}
+                >
+                  New
+                </p>
+              </div>
             </div>
-            <div>
+            <div className="pl-4 pr-5 sm:pl-8 sm:pr-10">
               <CourseSlider
                 Courses={
                   active === 1
@@ -154,16 +165,14 @@ const Catalog = () => {
           </div>
     
           {/* Section 3 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-8 py-12 lg:max-w-maxContent">
-            <div className="section_heading">Frequently Bought</div>
-            <div className="py-8">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                {catalogPageData?.data?.mostSellingCourses
-                  ?.slice(0, 6)
-                  .map((course, i) => (
-                    <CourseCard course={course} key={i} Height={"h-[350px]"} />
-                  ))}
-              </div>
+          <div className="mx-auto box-content w-full max-w-maxContentTab py-8 sm:py-12 lg:max-w-maxContent">
+            <div className="px-4 sm:px-8">
+              <div className="text-2xl sm:text-3xl font-bold text-richblack-5 mb-4">Frequently Bought</div>
+            </div>
+            <div className="pl-4 pr-5 sm:pl-8 sm:pr-10">
+              <CourseSlider
+                Courses={catalogPageData?.data?.mostSellingCourses || []}
+              />
             </div>
           </div>
     

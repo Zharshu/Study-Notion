@@ -45,23 +45,25 @@ export default function InstructorChart({ courses }) {
   // Options for the chart
   const options = {
     maintainAspectRatio: false,
+    responsive: true,
     plugins: {
       legend: {
-        position: 'right',
+        position: window.innerWidth < 768 ? 'bottom' : 'right',
         labels: {
-          boxWidth: 15,
-          padding: 10,
+          boxWidth: window.innerWidth < 768 ? 12 : 15,
+          padding: window.innerWidth < 768 ? 8 : 10,
           color: '#fff',
           font: {
-            size: 11
+            size: window.innerWidth < 768 ? 10 : 11
           },
           generateLabels: (chart) => {
             const data = chart.data;
             if (data.labels.length && data.datasets.length) {
               return data.labels.map((label, i) => {
                 const value = data.datasets[0].data[i];
-                const truncatedLabel = label.length > 20 
-                  ? label.substring(0, 20) + '...' 
+                const maxLength = window.innerWidth < 768 ? 15 : 20;
+                const truncatedLabel = label.length > maxLength 
+                  ? label.substring(0, maxLength) + '...' 
                   : label;
                 
                 return {

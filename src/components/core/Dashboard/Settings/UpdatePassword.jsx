@@ -27,6 +27,7 @@ export default function UpdatePassword() {
       await changePassword(token, data)
       // Clear the form fields after successful password change
       reset()
+      navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("ERROR MESSAGE - ", error.message)
     }

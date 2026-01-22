@@ -6,7 +6,7 @@ import {
   unsuspendUser,
   deleteUser,
 } from "../../../../services/operations/adminAPI";
-import { VscTrash, VscCheck, VscClose } from "react-icons/vsc";
+import { VscTrash, VscCheck } from "react-icons/vsc";
 import ConfirmationModal from "../../../common/ConfirmationModal";
 
 const UserManagement = () => {
@@ -101,8 +101,128 @@ const UserManagement = () => {
         </select>
       </div>
 
+      {/* Users List - Mobile */}
+      {filteredUsers.length === 0 ? (
+        <div className="md:hidden rounded-lg border border-richblack-700 bg-richblack-800 p-6 text-center text-richblack-300">
+          No users found
+        </div>
+      ) : (
+        <div className="md:hidden space-y-3">
+          {filteredUsers.map((user) => (
+            <div
+              key={user._id}
+              className="rounded-lg border border-richblack-700 bg-richblack-800 p-4"
+            >
+              <div className="flex items-center gap-3">
+                <img
+                  src={user.image}
+                  alt={user.firstName}
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <div className="min-w-0">
+                  <p className="text-richblack-5 font-medium">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-xs text-richblack-200 break-all">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      borderRadius: '9999px',
+                      padding: '0.25rem 0.75rem',
+                      fontSize: '0.75rem',
+                      fontWeight: '500',
+                      backgroundColor: user.accountType === "Admin"
+                        ? 'rgba(219, 39, 119, 0.2)'
+                        : user.accountType === "Instructor"
+                        ? 'rgba(59, 130, 246, 0.2)'
+                        : 'rgba(234, 179, 8, 0.2)',
+                      color: user.accountType === "Admin"
+                        ? '#FBCFE8'
+                        : user.accountType === "Instructor"
+                        ? '#BFDBFE'
+                        : '#FEF08A'
+                    }}
+                  >
+                    {user.accountType}
+                  </span>
+                  {user.suspended ? (
+                    <span className="rounded-full bg-rose-600 text-white px-2.5 py-0.5 text-xs font-semibold">Suspended</span>
+                  ) : (
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        borderRadius: '9999px',
+                        padding: '0.25rem 0.5rem',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        backgroundColor: '#16A34A',
+                        color: '#FFFFFF',
+                      }}
+                    >
+                      Active
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  {user.suspended ? (
+                    <button
+                      onClick={() => handleUnsuspendUser(user._id)}
+                      className="rounded-md bg-green-700 px-3 py-1.5 text-xs font-medium text-richblack-5 hover:bg-green-600"
+                      title="Unsuspend User"
+                    >
+                      Unsuspend
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        setConfirmationModal({
+                          text1: "Suspend User",
+                          text2: `Are you sure you want to suspend ${user.firstName}?`,
+                          btn1Text: "Suspend",
+                          btn2Text: "Cancel",
+                          btn1Handler: () =>
+                            handleSuspendUser(user._id, "Admin action"),
+                          btn2Handler: () => setConfirmationModal(null),
+                        })
+                      }
+                      className="rounded-md bg-yellow-700 px-3 py-1.5 text-xs font-medium text-richblack-5 hover:bg-yellow-600"
+                      title="Suspend User"
+                    >
+                      Suspend
+                    </button>
+                  )}
+                  <button
+                    onClick={() =>
+                      setConfirmationModal({
+                        text1: "Delete User",
+                        text2: `Are you sure you want to delete ${user.firstName}? This action cannot be undone.`,
+                        btn1Text: "Delete",
+                        btn2Text: "Cancel",
+                        btn1Handler: () => handleDeleteUser(user._id),
+                        btn2Handler: () => setConfirmationModal(null),
+                      })
+                    }
+                    className="rounded-md bg-pink-700 p-2 text-richblack-5 hover:bg-pink-600"
+                    title="Delete User"
+                    aria-label="Delete User"
+                  >
+                    <VscTrash />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Users Table */}
-      <div className="overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full border border-richblack-700">
           <thead className="bg-richblack-800">
             <tr>
@@ -118,7 +238,7 @@ const UserManagement = () => {
               <th className="p-4 text-left text-sm font-medium text-richblack-100">
                 Status
               </th>
-              <th className="p-4 text-left text-sm font-medium text-richblack-100">
+              <th className="p-4 text-right text-sm font-medium text-richblack-100">
                 Actions
               </th>
             </tr>
@@ -181,18 +301,30 @@ const UserManagement = () => {
                     {user.suspended ? (
                       <span style={{ color: '#F87171' }}>Suspended</span>
                     ) : (
-                      <span style={{ color: '#22C55E', fontWeight: '500' }}>Active</span>
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          borderRadius: '9999px',
+                          padding: '0.25rem 0.5rem',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          backgroundColor: '#16A34A',
+                          color: '#FFFFFF',
+                        }}
+                      >
+                        Active
+                      </span>
                     )}
                   </td>
-                  <td className="p-4">
-                    <div className="flex gap-2">
+                  <td className="p-4 text-right">
+                    <div className="ml-auto flex justify-end gap-2">
                       {user.suspended ? (
                         <button
                           onClick={() => handleUnsuspendUser(user._id)}
-                          className="rounded-md bg-green-700 px-4 py-1.5 text-sm font-medium text-richblack-5 hover:bg-green-600"
+                          className="rounded-md bg-green-700 p-2 text-sm font-medium text-richblack-5 hover:bg-green-600"
                           title="Unsuspend User"
                         >
-                          Unsuspend
+                          <VscCheck />
                         </button>
                       ) : (
                         <button
@@ -207,7 +339,7 @@ const UserManagement = () => {
                               btn2Handler: () => setConfirmationModal(null),
                             })
                           }
-                          className="rounded-md bg-yellow-700 px-4 py-1.5 text-sm font-medium text-richblack-5 hover:bg-yellow-600"
+                          className="rounded-md bg-yellow-700 px-3 py-1.5 text-sm font-medium text-richblack-5 hover:bg-yellow-600"
                           title="Suspend User"
                         >
                           Suspend
@@ -224,7 +356,7 @@ const UserManagement = () => {
                             btn2Handler: () => setConfirmationModal(null),
                           })
                         }
-                        className="rounded-md bg-pink-700 px-3 py-1.5 text-sm font-medium text-richblack-5 hover:bg-pink-600"
+                        className="rounded-md bg-pink-700 p-2 text-sm font-medium text-richblack-5 hover:bg-pink-600"
                         title="Delete User"
                       >
                         <VscTrash />

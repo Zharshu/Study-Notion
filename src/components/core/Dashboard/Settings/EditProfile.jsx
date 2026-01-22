@@ -24,7 +24,7 @@ export default function EditProfile() {
     // console.log("Form Data - ", data)
     try {
       await dispatch(updateProfile(token, data))
-      // Form values persist after save, no need to reset to empty
+      navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("ERROR MESSAGE - ", error.message)
     }
@@ -90,7 +90,7 @@ export default function EditProfile() {
                 className="form-style"
                 {...register("dateOfBirth", {
                   required: {
-                    value: true,
+                    value: false,
                     message: "Please enter your Date of Birth.",
                   },
                   max: {
@@ -115,7 +115,7 @@ export default function EditProfile() {
                 name="gender"
                 id="gender"
                 className="form-style"
-                {...register("gender", { required: true })}
+                {...register("gender", { required: false })}
                 defaultValue={user?.additionalDetails?.gender}
               >
                 {genders.map((ele, i) => {
@@ -147,7 +147,7 @@ export default function EditProfile() {
                 className="form-style"
                 {...register("contactNumber", {
                   required: {
-                    value: true,
+                    value: false,
                     message: "Please enter your Contact Number.",
                   },
                   maxLength: { value: 12, message: "Invalid Contact Number" },
@@ -171,7 +171,7 @@ export default function EditProfile() {
                 id="about"
                 placeholder="Enter Bio Details"
                 className="form-style"
-                {...register("about", { required: true })}
+                {...register("about", { required: false })}
                 defaultValue={user?.additionalDetails?.about}
               />
               {errors.about && (
@@ -188,7 +188,7 @@ export default function EditProfile() {
             onClick={() => {
               navigate("/dashboard/my-profile")
             }}
-            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
+            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50 hidden md:block"
           >
             Cancel
           </button>

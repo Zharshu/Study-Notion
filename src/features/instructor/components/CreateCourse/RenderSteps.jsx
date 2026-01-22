@@ -63,22 +63,18 @@ export default function RenderSteps() {
 
       <div className="relative mb-16 flex w-full select-none justify-between">
         {steps.map((item) => (
-          <>
             <div
-              className="flex min-w-[130px] flex-col items-center gap-y-2"
+              className="flex min-w-[80px] sm:min-w-[130px] flex-col items-center gap-y-2"
               key={item.id}
             >
-              
               <p
-                className={`text-sm ${
+                className={`text-xs sm:text-sm text-center ${
                   step >= item.id ? "text-richblack-5" : "text-richblack-500"
                 }`}
               >
                 {item.title}
               </p>
             </div>
-            
-          </>
         ))}
       </div>
       {/* Render specific component based on current step */}

@@ -134,61 +134,108 @@ function CourseDetails() {
       <div className={`relative w-full bg-richblack-800`}>
         {/* Hero Section */}
         <div className="mx-auto box-content px-4 lg:w-[1260px] 2xl:relative ">
-          <div className="mx-auto grid min-h-[450px] max-w-maxContentTab justify-items-center py-8 lg:mx-0 lg:justify-items-start lg:py-0 xl:max-w-[810px]">
-            <div className="relative block max-h-[30rem] lg:hidden">
-              <div className="absolute bottom-0 left-0 h-full w-full shadow-[#161D29_0px_-64px_36px_-28px_inset]"></div>
-              <img
-                src={thumbnail}
-                alt="course thumbnail"
-                className="aspect-auto w-full"
-              />
-            </div>
-            <div
-              className={`z-30 my-5 flex flex-col justify-center gap-4 py-5 text-lg text-richblack-5`}
-            >
-              <div>
-                <p className="text-4xl font-bold text-richblack-5 sm:text-[42px]">
-                  {courseName}
-                </p>
+          <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
+            
+            {/* Mobile Layout - Cleaner Card Design */}
+            <div className="lg:hidden py-6">
+              {/* Course Thumbnail - Smaller on Mobile */}
+              <div className="relative overflow-hidden rounded-lg mb-4">
+                <img
+                  src={thumbnail}
+                  alt="course thumbnail"
+                  className="w-full h-48 object-cover"
+                />
               </div>
-              <p className={`text-richblack-200`}>{courseDescription}</p>
-              <div className="text-md flex flex-wrap items-center gap-2">
-                <span className="text-yellow-25">{avgReviewCount}</span>
-                <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews.length} reviews)`}</span>
-                <span>{`${studentsEnrolled.length} students enrolled`}</span>
-              </div>
-              <div>
-                <p className="">
-                  Created By {`${instructor.firstName} ${instructor.lastName}`}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-5 text-lg">
-                <p className="flex items-center gap-2">
-                  {" "}
-                  <BiInfoCircle /> Created at {formatDate(createdAt)}
-                </p>
-                <p className="flex items-center gap-2">
-                  {" "}
-                  <HiOutlineGlobeAlt /> English
-                </p>
-              </div>
-            </div>
-            <div className="flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden">
-              <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">
-                Rs. {price}
+              
+              {/* Course Title */}
+              <h1 className="text-2xl font-bold text-richblack-5 mb-3">
+                {courseName}
+              </h1>
+              
+              {/* Course Description */}
+              <p className="text-sm text-richblack-200 mb-4 line-clamp-3">
+                {courseDescription}
               </p>
-              {(!user || user?.accountType === ACCOUNT_TYPE.STUDENT) && (
-                <>
-                  <button className="yellowButton" onClick={handleBuyCourse}>
-                    Buy Now
-                  </button>
-                  <button className="blackButton">Add to Cart</button>
-                </>
-              )}
+              
+              {/* Rating & Stats - Compact */}
+              <div className="flex flex-wrap items-center gap-2 text-sm mb-3">
+                <div className="flex items-center gap-1">
+                  <span className="text-yellow-25 font-semibold">{avgReviewCount}</span>
+                  <RatingStars Review_Count={avgReviewCount} Star_Size={16} />
+                </div>
+                <span className="text-richblack-400">•</span>
+                <span className="text-richblack-300">{ratingAndReviews.length} reviews</span>
+                <span className="text-richblack-400">•</span>
+                <span className="text-richblack-300">{studentsEnrolled.length} students</span>
+              </div>
+              
+              {/* Instructor Info - Compact */}
+              <div className="flex items-center gap-3 mb-4 pb-4 border-b border-richblack-700">
+                <img
+                  src={
+                    instructor.image
+                      ? instructor.image
+                      : `https://api.dicebear.com/5.x/initials/svg?seed=${instructor.firstName} ${instructor.lastName}`
+                  }
+                  alt="Instructor"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+                <div>
+                  <p className="text-xs text-richblack-400">Instructor</p>
+                  <p className="text-sm font-medium text-richblack-5">{`${instructor.firstName} ${instructor.lastName}`}</p>
+                </div>
+              </div>
+              
+              {/* Course Meta Info */}
+              <div className="flex flex-wrap gap-3 text-xs text-richblack-300 mb-4">
+                <div className="flex items-center gap-1">
+                  <BiInfoCircle />
+                  <span>Created {formatDate(createdAt)}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <HiOutlineGlobeAlt />
+                  <span>English</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop Layout - Original */}
+            <div className="hidden lg:grid min-h-[450px] justify-items-start py-0">
+              <div
+                className={`z-30 my-5 flex flex-col justify-center gap-4 py-5 text-lg text-richblack-5`}
+              >
+                <div>
+                  <p className="text-4xl font-bold text-richblack-5 sm:text-[42px]">
+                    {courseName}
+                  </p>
+                </div>
+                <p className="text-richblack-200">{courseDescription}</p>
+                <div className="text-md flex flex-wrap items-center gap-2">
+                  <span className="text-yellow-25">{avgReviewCount}</span>
+                  <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
+                  <span>{`(${ratingAndReviews.length} reviews)`}</span>
+                  <span>{`${studentsEnrolled.length} students enrolled`}</span>
+                </div>
+                <div>
+                  <p className="">
+                    Created By {`${instructor.firstName} ${instructor.lastName}`}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-5 text-lg">
+                  <p className="flex items-center gap-2">
+                    {" "}
+                    <BiInfoCircle /> Created at {formatDate(createdAt)}
+                  </p>
+                  <p className="flex items-center gap-2">
+                    {" "}
+                    <HiOutlineGlobeAlt /> English
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          {/* Courses Card */}
+          
+          {/* Courses Card - Desktop */}
           <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute  lg:block">
             <CourseDetailsCard
               course={response?.data?.courseDetails || response?.data}
@@ -198,11 +245,31 @@ function CourseDetails() {
           </div>
         </div>
       </div>
-      <div className="mx-auto box-content px-4 text-start text-richblack-5 lg:w-[1260px]">
+      
+      {/* Sticky Bottom Price Bar - Mobile Only */}
+      {(!user || user?.accountType === ACCOUNT_TYPE.STUDENT) && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-richblack-800 border-t border-richblack-700 p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.3)]">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-2xl font-bold text-richblack-5">
+                Rs. {price}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button className="bg-yellow-50 text-richblack-900 px-6 py-2 rounded-md font-semibold text-sm hover:bg-yellow-100 transition-all" onClick={handleBuyCourse}>
+                Buy Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Add padding bottom on mobile to account for sticky footer */}
+      <div className={`mx-auto box-content px-4 text-start text-richblack-5 lg:w-[1260px] ${(!user || user?.accountType === ACCOUNT_TYPE.STUDENT) ? 'pb-24 lg:pb-0' : ''}`}>
         <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
           {/* What will you learn section */}
-          <div className="my-8 border border-richblack-600 p-8">
-            <p className="text-3xl font-semibold">What you'll learn</p>
+          <div className="my-8 border border-richblack-600 p-4 sm:p-8">
+            <p className="text-xl sm:text-3xl font-semibold">What you'll learn</p>
             <div className="mt-5">
               <ReactMarkdown>{whatYouWillLearn}</ReactMarkdown>
             </div>
@@ -211,7 +278,7 @@ function CourseDetails() {
           {/* Course Content Section */}
           <div className="max-w-[830px] ">
             <div className="flex flex-col gap-3">
-              <p className="text-[28px] font-semibold">Course Content</p>
+              <p className="text-xl sm:text-[28px] font-semibold">Course Content</p>
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
                   <span>
@@ -247,7 +314,7 @@ function CourseDetails() {
 
             {/* Author Details */}
             <div className="mb-12 py-4">
-              <p className="text-[28px] font-semibold">Author</p>
+              <p className="text-xl sm:text-[28px] font-semibold">Author</p>
               <div className="flex items-center gap-4 py-4">
                 <img
                   src={

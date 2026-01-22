@@ -37,7 +37,7 @@ router.post(
   auth,
   changePasswordValidator,
   validate,
-  authController.changePassword
+  authController.changePassword,
 );
 
 // Route for refreshing access token
@@ -61,12 +61,15 @@ router.post(
   "/reset-password",
   resetPasswordValidator,
   validate,
-  passwordController.resetPassword
+  passwordController.resetPassword,
 );
 
 // ********************************************************************************************************
 //                                      Profile Routes
 // ********************************************************************************************************
+
+// Check if can delete account
+router.get("/canDeleteAccount", auth, profileController.canDeleteAccount);
 
 // Delet User Account
 router.delete("/deleteProfile", auth, profileController.deleteAccount);
@@ -78,7 +81,7 @@ router.get("/getEnrolledCourses", auth, profileController.getEnrolledCourses);
 router.put(
   "/updateDisplayPicture",
   auth,
-  profileController.updateDisplayPicture
+  profileController.updateDisplayPicture,
 );
 
 // Instructor Dashboard
