@@ -77,10 +77,7 @@ axiosInstance.interceptors.response.use(
         error.response?.data?.message || "Your account has been suspended.",
       );
 
-      // Redirect to login after a short delay
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 1500);
+      // Redirect handled by PrivateRoute observing token state
 
       return Promise.reject(error);
     }
@@ -108,11 +105,7 @@ axiosInstance.interceptors.response.use(
           "Your account role has been changed. Please login again.",
       );
 
-      // Redirect to login after a short delay
-
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 1500);
+      // Redirect handled by PrivateRoute observing token state
 
       return Promise.reject(error);
     }
@@ -136,8 +129,7 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
-      // Redirect to login
-      window.location.href = "/login";
+      // Redirect handled by PrivateRoute observing token state
 
       return Promise.reject(error);
     }
@@ -260,10 +252,7 @@ axiosInstance.interceptors.response.use(
           alert("Your session has expired. Please login again to continue.");
         }
 
-        // Redirect to login page
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 500);
+        // Redirect handled by PrivateRoute observing token state
 
         return Promise.reject(refreshError);
       }

@@ -1,13 +1,6 @@
 // Icons Import
 import { FaArrowRight } from "react-icons/fa"
 import { Link } from "react-router-dom"
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react"
-// Import Swiper styles
-import "swiper/css"
-import "swiper/css/free-mode"
-import "swiper/css/pagination"
-import { Autoplay, FreeMode, Pagination } from "swiper"
 
 // Image and Video Import
 import Banner from "../../assets/Images/banner.mp4"
@@ -21,7 +14,7 @@ import HighlightText from "../../components/core/HomePage/HighlightText"
 import InstructorSection from "../../components/core/HomePage/InstructorSection"
 import LearningLanguageSection from "../../components/core/HomePage/LearningLanguageSection"
 import TimelineSection from "../../components/core/HomePage/TimelineSection"
-import CourseCard from "../../components/course/CourseCard"
+import CourseSlider from "../../components/course/CourseSlider"
 import { fetchFeaturedCourses } from "../../services/operations/courseDetailsAPI"
 import { useState, useEffect } from "react"
 
@@ -206,38 +199,7 @@ function Home() {
             <div className="w-full">
                  <h2 className="text-center text-4xl font-semibold mt-10 mb-8">Featured Courses</h2>
                  <div className="w-full px-2 sm:px-0">
-                    <Swiper
-                        slidesPerView={1}
-                        spaceBetween={20}
-                        loop={featuredCourses.length > 1}
-                        centeredSlides={false}
-                        modules={[Autoplay, Pagination]}
-                        autoplay={{
-                            delay: 5000,
-                            disableOnInteraction: false,
-                        }}
-                        pagination={{
-                            clickable: true,
-                        }}
-                        breakpoints={{
-                            800: {
-                                slidesPerView: 2,
-                            },
-                            1024: {
-                                slidesPerView: 3,
-                            },
-                        }}
-                        className="mySwiper"
-                        style={{ paddingBottom: "40px" }}
-                    >
-                        {featuredCourses.map((course, index) => (
-                            <SwiperSlide key={index} className="w-full">
-                                <div className="w-full">
-                                    <CourseCard course={course} Height={"h-[250px]"} />
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                    <CourseSlider Courses={featuredCourses} />
                  </div>
             </div>
         )}

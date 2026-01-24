@@ -25,6 +25,20 @@ module.exports = {
         800: "#161D29",
         900: "#000814",
       },
+      red: {
+        5: "#FFEBEE",
+        25: "#FFCDD2",
+        50: "#EF9A9A",
+        100: "#E57373",
+        200: "#EF476F",
+        300: "#D43D63",
+        400: "#BA3356",
+        500: "#9F294A",
+        600: "#EF5350",
+        700: "#D32F2F",
+        800: "#C62828",
+        900: "#B71C1C",
+      },
       richblue: {
         5: "#ECF5FF",
         25: "#C6D6E1",
@@ -127,7 +141,7 @@ module.exports = {
     extend: {
       maxWidth: {
         maxContent: "1260px",
-        maxContentTab: "650px"
+        maxContentTab: "650px",
       },
     },
   },
