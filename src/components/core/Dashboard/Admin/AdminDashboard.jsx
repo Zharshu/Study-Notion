@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getPlatformStats } from "../../../../services/operations/adminAPI";
 import { VscPerson, VscBook, VscGraph, VscCheck } from "react-icons/vsc";
+import { Link } from "react-router-dom";
 
 const StatCard = ({ title, value, icon: Icon, color }) => {
   return (
@@ -151,42 +152,42 @@ const AdminDashboard = () => {
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <a
-            href="/dashboard/admin/users"
+          <Link
+            to="/dashboard/admin/users"
             className="bg-richblack-800 p-4 rounded-md border border-richblack-700 hover:bg-richblack-700 transition-all"
           >
             <p className="text-richblack-5 font-medium">Manage Users</p>
             <p className="text-richblack-300 text-sm mt-1">
               View and manage all users
             </p>
-          </a>
-          <a
-            href="/dashboard/admin/courses"
+          </Link>
+          <Link
+            to="/dashboard/admin/courses"
             className="bg-richblack-800 p-4 rounded-md border border-richblack-700 hover:bg-richblack-700 transition-all"
           >
             <p className="text-richblack-5 font-medium">Course Moderation</p>
             <p className="text-richblack-300 text-sm mt-1">
               Approve or reject courses
             </p>
-          </a>
-          <a
-            href="/dashboard/admin/categories"
+          </Link>
+          <Link
+            to="/dashboard/admin/categories"
             className="bg-richblack-800 p-4 rounded-md border border-richblack-700 hover:bg-richblack-700 transition-all"
           >
             <p className="text-richblack-5 font-medium">Manage Categories</p>
             <p className="text-richblack-300 text-sm mt-1">
               Create and organize categories
             </p>
-          </a>
-          <a
-            href="/dashboard/admin/analytics"
+          </Link>
+          <Link
+            to="/dashboard/admin/analytics"
             className="bg-richblack-800 p-4 rounded-md border border-richblack-700 hover:bg-richblack-700 transition-all"
           >
             <p className="text-richblack-5 font-medium">View Analytics</p>
             <p className="text-richblack-300 text-sm mt-1">
               Platform insights and trends
             </p>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
