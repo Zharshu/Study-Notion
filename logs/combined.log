@@ -722,3 +722,12 @@
 {"level":"http","message":"GET /api/v1/student/reviews 200 2304 - 1095.730 ms","timestamp":"2026-01-22T07:59:05.744Z"}
 {"level":"http","message":"GET /api/v1/admin/category 200 1587 - 194.110 ms","timestamp":"2026-01-22T07:59:07.241Z"}
 {"level":"http","message":"GET /api/v1/admin/category/67edf72f6525d3b469f05d26 200 6935 - 1512.947 ms","timestamp":"2026-01-22T07:59:08.777Z"}
+{"level":"http","message":"GET /api/v1/student/reviews 200 2304 - 321.305 ms","timestamp":"2026-01-22T08:31:29.982Z"}
+{"level":"http","message":"GET /api/v1/instructor/getFeaturedCourses 200 6308 - 313.180 ms","timestamp":"2026-01-22T08:31:29.991Z"}
+{"level":"http","message":"GET /api/v1/admin/category 200 1587 - 200.822 ms","timestamp":"2026-01-22T08:31:32.949Z"}
+{"level":"http","message":"GET /api/v1/admin/category/67edf72f6525d3b469f05d26 200 6935 - 820.507 ms","timestamp":"2026-01-22T08:31:33.798Z"}
+{"level":"http","message":"GET /api/v1/instructor/getFeaturedCourses 200 6308 - 148.754 ms","timestamp":"2026-01-22T08:31:42.366Z"}
+{"level":"http","message":"GET /api/v1/student/reviews 200 2304 - 167.079 ms","timestamp":"2026-01-22T08:31:42.377Z"}
+{"level":"http","message":"GET /api/v1/admin/category 200 1587 - 279.190 ms","timestamp":"2026-01-24T05:35:30.979Z"}
+{"level":"http","message":"GET /api/v1/student/reviews 200 2304 - 249.953 ms","timestamp":"2026-01-24T05:35:31.013Z"}
+{"level":"http","message":"GET /api/v1/instructor/getFeaturedCourses 200 6308 - 262.942 ms","timestamp":"2026-01-24T05:35:31.047Z"}
