@@ -30,11 +30,11 @@ exports.login = async (req, res, next) => {
     const cookieOptions = tokenUtils.getRefreshTokenCookieOptions();
     res.cookie("refreshToken", result.refreshToken, cookieOptions);
 
-    // Also set access token in cookie for compatibility
     res.cookie("token", result.token, {
       httpOnly: true,
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production" || process.env.COOKIE_SAMESITE === "none",
+      sameSite: process.env.COOKIE_SAMESITE || "lax",
     });
 
     return successResponse(res, 200, "User Login Success", {
@@ -100,11 +100,11 @@ exports.refreshAccessToken = async (req, res, next) => {
       res.cookie("refreshToken", result.refreshToken, cookieOptions);
     }
 
-    // Also set new access token in cookie
     res.cookie("token", result.token, {
       httpOnly: true,
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24h (or match env)
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production" || process.env.COOKIE_SAMESITE === "none",
+      sameSite: process.env.COOKIE_SAMESITE || "lax",
     });
 
     return successResponse(res, 200, "Access token refreshed successfully", {
@@ -125,18 +125,21 @@ exports.logout = async (req, res, next) => {
     const { refreshToken } = req.cookies;
     await authService.logout(refreshToken);
 
-    // Clear cookies
+    const secure = process.env.NODE_ENV === "production" || process.env.COOKIE_SAMESITE === "none";
+    const sameSite = process.env.COOKIE_SAMESITE || "lax";
+
+    // Clear cookies with the exact same options used to create them
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.COOKIE_SAMESITE || "lax",
+      secure: secure,
+      sameSite: sameSite,
       path: "/",
     });
 
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.COOKIE_SAMESITE || "lax",
+      secure: secure,
+      sameSite: sameSite,
       path: "/",
     });
 
@@ -155,18 +158,21 @@ exports.logoutAll = async (req, res, next) => {
     const userId = req.user.id;
     const result = await authService.logoutAll(userId);
 
+    const secure = process.env.NODE_ENV === "production" || process.env.COOKIE_SAMESITE === "none";
+    const sameSite = process.env.COOKIE_SAMESITE || "lax";
+
     // Clear cookies
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.COOKIE_SAMESITE || "lax",
+      secure: secure,
+      sameSite: sameSite,
       path: "/",
     });
 
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.COOKIE_SAMESITE || "lax",
+      secure: secure,
+      sameSite: sameSite,
       path: "/",
     });
 

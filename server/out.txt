@@ -1,0 +1,4 @@
+{
+  "message": "disabled customer",
+  "http_code": 401
+}

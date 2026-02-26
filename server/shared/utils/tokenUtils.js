@@ -65,14 +65,18 @@ exports.hashToken = (token) => {
  */
 exports.getRefreshTokenCookieOptions = () => {
   const isProduction = process.env.NODE_ENV === "production";
+  const sameSite = process.env.COOKIE_SAMESITE || "lax";
+  
+  // Browsers require Secure=true when SameSite=None
+  const secure = isProduction || sameSite.toLowerCase() === 'none';
   
   return {
     httpOnly: true, // Prevents JavaScript access
-    secure: isProduction, // HTTPS only in production
-    sameSite: process.env.COOKIE_SAMESITE || "lax", // CSRF protection
+    secure: secure, // Enforce HTTPS if SameSite is None or in production
+    sameSite: sameSite, // CSRF protection
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
     path: "/", // Available across entire app
-    ...(isProduction && { domain: process.env.COOKIE_DOMAIN }),
+    ...(isProduction && process.env.COOKIE_DOMAIN ? { domain: process.env.COOKIE_DOMAIN } : {}),
   };
 };
 

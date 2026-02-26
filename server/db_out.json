@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "696dc23c3ea70215a7b1801e",
+    "courseName": "Basic Java",
+    "thumbnail": "https://res.cloudinary.com/dsa5lmbdr/image/upload/v1768800827/CodeHelp/wcnw9udhdaaixsw2zzek.jpg"
+  },
+  {
+    "_id": "696dc65e3ea70215a7b18070",
+    "courseName": "React",
+    "thumbnail": "https://res.cloudinary.com/dsa5lmbdr/image/upload/v1768801885/CodeHelp/pagu5mymniqpr1gjxk4r.jpg"
+  },
+  {
+    "_id": "6971c856c403e55d1bada69f",
+    "courseName": "React Native",
+    "thumbnail": "https://res.cloudinary.com/dsa5lmbdr/image/upload/v1769064530/CodeHelp/h8xhi2ssver2otnbl7xn.webp"
+  }
+]
