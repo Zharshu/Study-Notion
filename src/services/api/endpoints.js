@@ -60,6 +60,9 @@ export const courseEndpoints = {
   // Student course endpoints
   LECTURE_COMPLETION_API: BASE_URL + "/student/updateCourseProgress",
   CREATE_RATING_API: BASE_URL + "/student/createRating",
+
+  // AI Assistant endpoints
+  ENHANCE_TEXT_API: BASE_URL + "/instructor/ai/rewrite-text",
 };
 
 // RATINGS AND REVIEWS - Updated to match backend /student routes

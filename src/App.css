@@ -275,3 +275,10 @@ details > summary::-webkit-details-marker {
    width: 100% !important;
    height: auto !important;
  }
+
+ /* Fade abstract gradients in light mode to preserve readability */
+ [data-theme='light'] .codeblock1,
+ [data-theme='light'] .codeblock2 {
+   opacity: 0.05 !important;
+   filter: blur(40px) !important;
+ }

@@ -4,13 +4,16 @@ import { BsChevronDown } from "react-icons/bs"
 import { useSelector, useDispatch } from "react-redux"
 import { Link, matchPath, useLocation, useNavigate } from "react-router-dom"
 import { IoClose } from "react-icons/io5"
+import { FiSun, FiMoon } from "react-icons/fi"
 
-import logo from "../../../assets/Logo/Logo-Full-Light.png"
+import logoLight from "../../../assets/Logo/Logo-Full-Light.png"
+import logoDark from "../../../assets/Logo/Logo-Full-Dark.png"
 import { NavbarLinks } from "../../../data/navbar-links"
 import { fetchCourseCategories } from "../../../services/operations/categoryAPI"
 import { logout } from "../../../services/operations/authAPI"
 import { ACCOUNT_TYPE } from "../../../utils/constants"
 import ProfileDropdown from "../../../components/core/Auth/ProfileDropDown"
+import { useTheme } from "../../../hooks/useTheme"
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth)
@@ -21,6 +24,7 @@ function Navbar() {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { theme, toggleTheme } = useTheme()
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [catalogOpen, setCatalogOpen] = useState(false)
@@ -44,7 +48,7 @@ function Navbar() {
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
         {/* Logo */}
         <Link to="/">
-          <img src={logo} alt="Logo" width={160} height={32} loading="lazy" />
+          <img src={theme === "dark" ? logoLight : logoDark} alt="Logo" width={160} height={32} loading="lazy" />
         </Link>
         {/* Navigation links */}
         <nav className="hidden md:block">
@@ -106,6 +110,9 @@ function Navbar() {
         </nav>
         {/* Login / Signup / Dashboard */}
         <div className="hidden sm:flex items-center gap-x-2 md:gap-x-4">
+          <button onClick={toggleTheme} className="text-2xl text-richblack-100 hover:text-richblack-5 transition-all">
+            {theme === "dark" ? <FiSun /> : <FiMoon />}
+          </button>
           {user && user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />

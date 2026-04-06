@@ -23,6 +23,7 @@ const {
   GET_FULL_COURSE_DETAILS_AUTHENTICATED,
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
+  ENHANCE_TEXT_API,
 } = courseEndpoints;
 
 export const getAllCourses = async () => {
@@ -459,5 +460,32 @@ export const fetchFeaturedCourses = async () => {
   } catch (error) {
     console.log("FEATURED_COURSES_API ERROR............", error);
   }
+  return result;
+};
+
+// AI Enhance text
+export const enhanceCourseTextAPI = async (text, token) => {
+  const toastId = toast.loading("Enhancing text with AI...");
+  let result = null;
+  try {
+    const response = await apiConnector(
+      "POST",
+      ENHANCE_TEXT_API,
+      { text },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("ENHANCE TEXT API RESPONSE............", response);
+    if (!response.data.success) {
+      throw new Error(response.data.message);
+    }
+    toast.success("Text enhanced by AI!");
+    result = response.data.data.text;
+  } catch (error) {
+    console.log("ENHANCE TEXT API ERROR............", error);
+    toast.error(error.message);
+  }
+  toast.dismiss(toastId);
   return result;
 };

@@ -162,4 +162,12 @@ router.get(
   aiController.getAIServiceStatus,
 );
 
+// Enhance Text
+router.post(
+  "/ai/rewrite-text",
+  auth,
+  isInstructor,
+  aiController.enhanceText,
+);
+
 module.exports = router;

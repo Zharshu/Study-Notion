@@ -9,9 +9,12 @@ import {
   addCourseDetails,
   editCourseDetails,
   fetchCourseCategories,
+  enhanceCourseTextAPI,
 } from "../../../../../services/operations/courseDetailsAPI"
 import { setCourse, setStep } from "../../../slices/courseSlice"
 import { COURSE_STATUS } from "../../../../../utils/constants"
+import { BsMicFill, BsMicMuteFill } from "react-icons/bs"
+import { AiOutlineRobot } from "react-icons/ai"
 import IconBtn from "../../../../../components/common/IconBtn"
 import Upload from "../Upload"
 import ChipInput from "./ChipInput"
@@ -31,6 +34,68 @@ export default function CourseInformationForm() {
   const { course, editCourse } = useSelector((state) => state.course)
   const [loading, setLoading] = useState(false)
   const [courseCategories, setCourseCategories] = useState([])
+  const [isDictatingDesc, setIsDictatingDesc] = useState(false)
+  const [isDictatingBenefits, setIsDictatingBenefits] = useState(false)
+  const [isEnhancingDesc, setIsEnhancingDesc] = useState(false)
+  const [isEnhancingBenefits, setIsEnhancingBenefits] = useState(false)
+
+  // AI text enhancer function
+  const handleEnhanceText = async (fieldName, setEnhancingState) => {
+    const currentText = getValues(fieldName)
+    if (!currentText || currentText.trim() === "") {
+      toast.error("Please enter some text first")
+      return;
+    }
+    setEnhancingState(true)
+    const enhancedText = await enhanceCourseTextAPI(currentText, token)
+    if (enhancedText) {
+      setValue(fieldName, enhancedText, { shouldValidate: true, shouldDirty: true })
+    }
+    setEnhancingState(false)
+  }
+
+  // Voice to text dictation function
+  const startListening = (fieldName, setDictatingState) => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      toast.error("Speech Recognition is not supported in your browser.")
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true; // allow continuous listening
+    recognition.interimResults = false;
+    recognition.lang = "en-US";
+    
+    recognition.onstart = () => {
+      setDictatingState(true);
+      toast.success("Voice recording started. Speak now...")
+    };
+    
+    recognition.onresult = (event) => {
+      const current = event.resultIndex;
+      const transcript = event.results[current][0].transcript;
+      const currentVal = getValues(fieldName) || "";
+      setValue(fieldName, currentVal + (currentVal ? " " : "") + transcript, { shouldValidate: true, shouldDirty: true });
+    };
+
+    recognition.onerror = (event) => {
+      toast.error("Microphone error: " + event.error);
+      setDictatingState(false);
+    };
+
+    recognition.onend = () => {
+      setDictatingState(false);
+    };
+    
+    // Auto stop after 10 seconds or when user stops talking (handled by OS plugin in some browsers), so we just assign it to double click or manual let them close? It auto turns off onend.
+    recognition.start();
+
+    // Give way to stop it manually by adding standard timeout 
+    setTimeout(() => {
+      recognition.stop();
+      setDictatingState(false);
+    }, 15000); // 15 seconds max dictation per click
+  }
 
   useEffect(() => {
     const getCategories = async () => {
@@ -198,6 +263,24 @@ export default function CourseInformationForm() {
             Course Description is required
           </span>
         )}
+        <div className="flex justify-end gap-x-2 mt-2">
+            <button
+              type="button"
+              onClick={() => startListening("courseShortDesc", setIsDictatingDesc)}
+              disabled={isDictatingDesc}
+              className={`flex items-center gap-x-2 rounded-md ${isDictatingDesc ? 'bg-pink-200 text-richblack-900 leading-none animate-pulse' : 'bg-richblack-700 text-richblack-5'} py-1 px-3 text-sm font-semibold transition-all`}
+            >
+              {isDictatingDesc ? <BsMicMuteFill /> : <BsMicFill />} {isDictatingDesc ? "Recording..." : "Voice Type"}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleEnhanceText("courseShortDesc", setIsEnhancingDesc)}
+              disabled={isEnhancingDesc}
+              className={`flex items-center gap-x-2 rounded-md bg-yellow-50 text-richblack-900 py-1 px-3 text-sm font-semibold hover:bg-yellow-100 transition-all`}
+            >
+              <AiOutlineRobot className="text-lg" /> {isEnhancingDesc ? "Enhancing..." : "AI Enhance"}
+            </button>
+        </div>
       </div>
       {/* Course Price */}
       <div className="flex flex-col space-y-2">
@@ -287,6 +370,24 @@ export default function CourseInformationForm() {
             Benefits of the course is required
           </span>
         )}
+        <div className="flex justify-end gap-x-2 mt-2">
+            <button
+              type="button"
+              onClick={() => startListening("courseBenefits", setIsDictatingBenefits)}
+              disabled={isDictatingBenefits}
+              className={`flex items-center gap-x-2 rounded-md ${isDictatingBenefits ? 'bg-pink-200 text-richblack-900 leading-none animate-pulse' : 'bg-richblack-700 text-richblack-5'} py-1 px-3 text-sm font-semibold transition-all`}
+            >
+              {isDictatingBenefits ? <BsMicMuteFill /> : <BsMicFill />} {isDictatingBenefits ? "Recording..." : "Voice Type"}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleEnhanceText("courseBenefits", setIsEnhancingBenefits)}
+              disabled={isEnhancingBenefits}
+              className={`flex items-center gap-x-2 rounded-md bg-yellow-50 text-richblack-900 py-1 px-3 text-sm font-semibold hover:bg-yellow-100 transition-all`}
+            >
+              <AiOutlineRobot className="text-lg" /> {isEnhancingBenefits ? "Enhancing..." : "AI Enhance"}
+            </button>
+        </div>
       </div>
       {/* Requirements/Instructions */}
       <RequirementsField

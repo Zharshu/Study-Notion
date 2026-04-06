@@ -4,3 +4,51 @@
 
 /* Import global Tailwind utilities */
 @import './styles/tailwind-utilities.css';
+
+:root {
+  /* Default Dark Mode Theme */
+  --color-richblack-5: #F1F2FF;
+  --color-richblack-25: #DBDDEA;
+  --color-richblack-50: #C5C7D4;
+  --color-richblack-100: #AFB2BF;
+  --color-richblack-200: #999DAA;
+  --color-richblack-300: #838894;
+  --color-richblack-400: #6E727F;
+  --color-richblack-500: #585D69;
+  --color-richblack-600: #424854;
+  --color-richblack-700: #2C333F;
+  --color-richblack-800: #161D29;
+  --color-richblack-900: #000814;
+
+  /* Highlight Text Gradients (Default Dark Mode) */
+  --highlight-from: #1FA2FF;
+  --highlight-via: #12D8FA;
+  --highlight-to: #A6FFCB;
+}
+
+[data-theme='light'] {
+  /* Inverted Light Mode Theme */
+  --color-richblack-5: #000814;    /* Text gets dark */
+  --color-richblack-25: #161D29;
+  --color-richblack-50: #2C333F;
+  --color-richblack-100: #424854;
+  --color-richblack-200: #585D69;
+  --color-richblack-300: #6E727F;
+  --color-richblack-400: #838894;
+  --color-richblack-500: #999DAA;
+  --color-richblack-600: #AFB2BF;
+  --color-richblack-700: #c9ccd6;  /* Soft grey borders */
+  --color-richblack-800: #F1F2FF;  /* Bg gets very light, soft gray-white */
+  --color-richblack-900: #FFFFFF;  /* Main background gets pure white */
+
+  /* Highlight Text Gradients (Light Mode) */
+  --highlight-from: #0052D4;
+  --highlight-via: #4364F7;
+  --highlight-to: #6FB1FC;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--color-richblack-900);
+  color: var(--color-richblack-5);
+}

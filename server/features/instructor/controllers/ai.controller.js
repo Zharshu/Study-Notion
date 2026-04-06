@@ -5,6 +5,7 @@ const {
   successResponse,
   errorResponse,
 } = require("../../../shared/utils/responseHandler");
+const openaiService = require("../../../shared/services/openai.service");
 
 /**
  * Generate or regenerate AI summary for a video
@@ -128,6 +129,27 @@ exports.getAIServiceStatus = async (req, res, next) => {
       message: isReady
         ? "AI service is ready to generate summaries"
         : "AI service is not configured",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Enhance text via OpenAI
+ * POST /api/instructor/ai/rewrite-text
+ */
+exports.enhanceText = async (req, res, next) => {
+  try {
+    const { text } = req.body;
+    if (!text) {
+      throw new ValidationError("Text is required for enhancement");
+    }
+
+    const enhancedText = await openaiService.enhanceText(text);
+
+    return successResponse(res, 200, "Text enhanced successfully", {
+      text: enhancedText,
     });
   } catch (error) {
     next(error);

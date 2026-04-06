@@ -35,8 +35,10 @@ import UserManagement from "./components/core/Dashboard/Admin/UserManagement";
 import CourseModeration from "./components/core/Dashboard/Admin/CourseModeration";
 import CategoryManagement from "./components/core/Dashboard/Admin/CategoryManagement";
 import Analytics from "./components/core/Dashboard/Admin/Analytics";
+import { useTheme } from "./hooks/useTheme";
 
 function App() {
+  useTheme(); // Initializes global CSS variables
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
