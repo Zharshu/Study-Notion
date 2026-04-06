@@ -22,6 +22,8 @@ A full-stack **EdTech platform** built with the MERN stack, enabling students to
 - ✏️ **Course Creation** - Create courses with sections, subsections, and video lectures
 - 📹 **Media Management** - Upload videos and thumbnails via Cloudinary
 - 🤖 **AI Video Summaries** - Generate AI-powered lecture summaries using Google Gemini
+- 🎤 **Voice Dictation** - Voice-type course details seamlessly directly into forms using the Web Speech API.
+- ✨ **AI Auto-Write** - Automatically polish and rewrite your course descriptions professionally using OpenAI.
 - 📈 **Instructor Dashboard** - View course performance and revenue analytics
 - 👥 **Student Insights** - Monitor enrollments and course ratings
 - ✅ **Approval System** - Submit courses for admin approval before publishing
@@ -39,7 +41,8 @@ A full-stack **EdTech platform** built with the MERN stack, enabling students to
 
 ### **Advanced Features**
 
-- 🤖 **AI-Powered Assistance** - Google Gemini AI integration for video summaries and content generation
+- 🤖 **AI-Powered Assistance** - Google Gemini AI integration for video summaries and OpenAI integration for text enhancement
+- 🌓 **Global Theme Toggle** - Zero-refactoring, seamless Light/Dark mode support using CSS Custom Properties
 - 🔄 **Refresh Token System** - Secure session management with token rotation
 - 📱 **Responsive Design** - Mobile-first UI built with TailwindCSS
 - 🔒 **Security Middleware** - Helmet.js for HTTP headers security
