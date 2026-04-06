@@ -173,6 +173,7 @@ StudyNotion/
 - Cloudinary account
 - Razorpay account
 - Google Gemini API key (optional, for AI features)
+- OpenAI API key (optional, for AI text enhancement features)
 
 ### **1. Clone the Repository**
 
@@ -222,8 +223,9 @@ RAZORPAY_SECRET=your_razorpay_secret
 # Frontend URL (for CORS)
 FRONTEND_URL=http://localhost:3000
 
-# Google Gemini AI (Optional)
+# Google Gemini AI & OpenAI (Optional)
 GOOGLE_GEMINI_API_KEY=your_gemini_api_key
+OPENAI_API_KEY=your_openai_api_key
 ```
 
 Start the backend server:
