@@ -288,10 +288,10 @@ const UserManagement = () => {
                           ? 'rgba(59, 130, 246, 0.2)'
                           : 'rgba(234, 179, 8, 0.2)',
                         color: user.accountType === "Admin"
-                          ? '#FBCFE8'
+                          ? '#9D174D' // pink-800 for better contrast in light mode
                           : user.accountType === "Instructor"
-                          ? '#BFDBFE'
-                          : '#FEF08A'
+                          ? '#1E40AF' // blue-800
+                          : '#854D0E' // yellow-800
                       }}
                     >
                       {user.accountType}

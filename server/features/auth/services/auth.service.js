@@ -3,6 +3,9 @@ const { AuthenticationError, ValidationError } = require('../../../shared/errors
 const bcrypt = require('bcryptjs');
 const otpGenerator = require('otp-generator');
 const tokenUtils = require('../../../shared/utils/tokenUtils');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 /**
  * User signup service
@@ -359,3 +362,106 @@ exports.logoutAll = async (userId) => {
     count: result
   };
 };
+
+/**
+ * Custom Google OAuth handler
+ * @param {string} token - Google ID Token
+ * @param {string} accountType - Selected account type for new signups
+ * @returns {Object} { user, token, refreshToken }
+ */
+exports.googleAuth = async (token, accountType) => {
+  if (!token) {
+    throw new ValidationError('Google ID Token is required');
+  }
+
+  let ticket;
+  try {
+    ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+  } catch (error) {
+    throw new AuthenticationError('Invalid Google authentication token');
+  }
+
+  const payload = ticket.getPayload();
+  const { sub: googleId, email, given_name: firstName, family_name: lastName, picture } = payload;
+
+  let user = await User.findOne({ email }).populate('additionalDetails');
+
+  if (user) {
+    if (user.suspended) {
+      const message = user.suspensionReason 
+        ? `Your account has been suspended. Reason: ${user.suspensionReason}`
+        : 'Your account has been suspended. Please contact admin for details';
+      throw new AuthenticationError(message);
+    }
+    
+    // Optionally update user to link google account if not linked
+    if (user.authProvider === 'local' && !user.googleId) {
+      user.googleId = googleId;
+      user.authProvider = 'google';
+      user.image = user.image || picture;
+      await user.save();
+    }
+  } else {
+    // Create new google user
+    const profileDetails = await Profile.create({
+      gender: null,
+      dateOfBirth: null,
+      about: null,
+      contactNumber: null
+    });
+
+    user = await User.create({
+      firstName: firstName || 'Google',
+      lastName: lastName || 'User',
+      email,
+      accountType: accountType || 'Student',
+      approved: accountType === 'Instructor' ? false : true,
+      additionalDetails: profileDetails._id,
+      image: picture || `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
+      authProvider: 'google',
+      googleId,
+    });
+  }
+
+  // Standard token generation process matching login()
+  const tokenPayload = {
+    email: user.email,
+    id: user._id,
+    accountType: user.accountType
+  };
+
+  const accessToken = tokenUtils.generateAccessToken(tokenPayload);
+  const refreshTokenValue = tokenUtils.generateRefreshToken(tokenPayload);
+  const hashedRefreshToken = tokenUtils.hashToken(refreshTokenValue);
+  const expiryDate = tokenUtils.calculateExpiryDate(process.env.REFRESH_TOKEN_EXPIRY || '30d');
+
+  await RefreshToken.create({
+    userId: user._id,
+    token: hashedRefreshToken,
+    expiresAt: expiryDate,
+    deviceInfo: {}, 
+    isRevoked: false
+  });
+
+  user.lastLogin = new Date();
+  user.loginAttempts = 0;
+  await user.save();
+
+  return {
+    user: {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      accountType: user.accountType,
+      image: user.image,
+      additionalDetails: user.additionalDetails
+    },
+    token: accessToken,
+    refreshToken: refreshTokenValue
+  };
+};
+

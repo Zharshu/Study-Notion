@@ -181,3 +181,33 @@ exports.logoutAll = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * Google Auth Controller
+ * Authenticate user with Google and return tokens
+ */
+exports.googleAuth = async (req, res, next) => {
+  try {
+    const { token, accountType } = req.body;
+    const result = await authService.googleAuth(token, accountType);
+
+    // Set refresh token as httpOnly cookie
+    const cookieOptions = tokenUtils.getRefreshTokenCookieOptions();
+    res.cookie("refreshToken", result.refreshToken, cookieOptions);
+
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      secure: process.env.NODE_ENV === "production" || process.env.COOKIE_SAMESITE === "none",
+      sameSite: process.env.COOKIE_SAMESITE || "lax",
+    });
+
+    return successResponse(res, 200, "Google Login Success", {
+      token: result.token,
+      user: result.user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

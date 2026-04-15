@@ -10,6 +10,7 @@ const {
   SENDOTP_API,
   SIGNUP_API,
   LOGIN_API,
+  GOOGLE_LOGIN_API,
   RESETPASSTOKEN_API,
   RESETPASSWORD_API,
 } = endpoints;
@@ -149,6 +150,45 @@ export function login(email, password, navigate) {
     } catch (error) {
       console.log("LOGIN API ERROR............", error);
       toast.error("Login Failed");
+    }
+    dispatch(setLoading(false));
+    toast.dismiss(toastId);
+  };
+}
+
+export function signInWithGoogle(token, accountType, navigate) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Logging in with Google...");
+    dispatch(setLoading(true));
+    try {
+      const response = await apiConnector("POST", GOOGLE_LOGIN_API, {
+        token,
+        accountType
+      });
+
+      console.log("GOOGLE LOGIN API RESPONSE............", response);
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      toast.success("Google Login Successful");
+
+      const { token: jwtToken, user } = response.data.data;
+
+      dispatch(setToken(jwtToken));
+      const userImage = user?.image
+        ? user.image
+        : `https://api.dicebear.com/5.x/initials/svg?seed=${user.firstName} ${user.lastName}`;
+      dispatch(setUser({ ...user, image: userImage }));
+
+      localStorage.setItem("token", JSON.stringify(jwtToken));
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/dashboard/my-profile");
+    } catch (error) {
+      console.log("GOOGLE LOGIN API ERROR............", error);
+      toast.error(error?.response?.data?.message || "Google Login Failed");
+      navigate("/login");
     }
     dispatch(setLoading(false));
     toast.dismiss(toastId);

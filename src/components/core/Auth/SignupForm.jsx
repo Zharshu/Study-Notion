@@ -3,8 +3,9 @@ import { toast } from "react-hot-toast"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { GoogleLogin } from "@react-oauth/google"
 
-import { sendOtp } from "../../../services/operations/authAPI"
+import { sendOtp, signInWithGoogle } from "../../../services/operations/authAPI"
 import { setSignupData } from "../../../store/slices/authSlice"
 import { ACCOUNT_TYPE } from "../../../utils/constants"
 import Tab from "../../common/Tab"
@@ -200,9 +201,27 @@ function SignupForm() {
             </span>
           </label>
         </div>
+        <div className="mt-6 w-full flex justify-center">
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              dispatch(signInWithGoogle(credentialResponse.credential, accountType, navigate))
+            }}
+            onError={() => {
+              console.log("Login Failed")
+            }}
+            useOneTap
+          />
+        </div>
+
+        <div className="flex w-full items-center gap-x-2 my-2">
+          <div className="h-[1px] w-full bg-richblack-700"></div>
+          <p className="text-richblack-700 font-medium leading-[1.375rem]">OR</p>
+          <div className="h-[1px] w-full bg-richblack-700"></div>
+        </div>
+
         <button
           type="submit"
-          className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+          className="mt-2 mb-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
         >
           Create Account
         </button>

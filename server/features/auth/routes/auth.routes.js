@@ -25,6 +25,9 @@ const {
 // Route for user login
 router.post("/login", loginValidator, validate, authController.login);
 
+// Route for Google OAuth login/signup
+router.post("/google", authController.googleAuth);
+
 // Route for user signup
 router.post("/signup", signupValidator, validate, authController.signup);
 

@@ -12,6 +12,7 @@ import UpdatePassword from "./pages/auth/UpdatePassword";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
+import PrivacyPolicy from "./pages/public/PrivacyPolicy";
 import MyProfile from "./components/core/Dashboard/MyProfile";
 import Dashboard from "./pages/dashboard/Dashboard";
 import PrivateRoute from "./components/core/Auth/PrivateRoute";
@@ -99,6 +100,7 @@ function App() {
 
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
           <Route
             element={
