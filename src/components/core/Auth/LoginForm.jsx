@@ -84,7 +84,7 @@ function LoginForm() {
           </p>
         </Link>
       </label>
-      <div className="mt-6 w-full flex justify-center">
+      <div className="mt-3 w-full flex justify-center">
         <GoogleLogin
           onSuccess={(credentialResponse) => {
             dispatch(signInWithGoogle(credentialResponse.credential, null, navigate))
@@ -96,7 +96,7 @@ function LoginForm() {
         />
       </div>
 
-      <div className="flex w-full items-center gap-x-2 my-2">
+      <div className="flex w-full items-center gap-x-2 my-1">
         <div className="h-[1px] w-full bg-richblack-700"></div>
         <p className="text-richblack-700 font-medium leading-[1.375rem]">OR</p>
         <div className="h-[1px] w-full bg-richblack-700"></div>
@@ -104,7 +104,7 @@ function LoginForm() {
 
       <button
         type="submit"
-        className="mt-2 mb-4 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+        className="mt-1 mb-4 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
       >
         Sign In
       </button>

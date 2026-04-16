@@ -201,7 +201,7 @@ function SignupForm() {
             </span>
           </label>
         </div>
-        <div className="mt-6 w-full flex justify-center">
+        <div className="mt-3 w-full flex justify-center">
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               dispatch(signInWithGoogle(credentialResponse.credential, accountType, navigate))
@@ -213,7 +213,7 @@ function SignupForm() {
           />
         </div>
 
-        <div className="flex w-full items-center gap-x-2 my-2">
+        <div className="flex w-full items-center gap-x-2 my-1">
           <div className="h-[1px] w-full bg-richblack-700"></div>
           <p className="text-richblack-700 font-medium leading-[1.375rem]">OR</p>
           <div className="h-[1px] w-full bg-richblack-700"></div>
@@ -221,7 +221,7 @@ function SignupForm() {
 
         <button
           type="submit"
-          className="mt-2 mb-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+          className="mt-0 mb-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
         >
           Create Account
         </button>
